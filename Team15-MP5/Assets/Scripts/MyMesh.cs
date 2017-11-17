@@ -8,6 +8,9 @@ public class MyMesh : MonoBehaviour {
 
     public int n = 2;      //# of vertices horizontally (X local)
     public int m = 2;      //# of vertices vertically (Y local)
+    public Vector2 textureOffset = new Vector2(0, 0);
+    public Vector2 textureScale = new Vector2(1, 1);
+    public float textureRotation = 0.0f;
 
     private Mesh theMesh = null;
 
@@ -16,12 +19,12 @@ public class MyMesh : MonoBehaviour {
     private Vector3[] vertices;
     private int[] triangles;
     private Vector3[] normals;
+    private Vector2[] uv;
 
 	// Use this for initialization
 	void Start () {
         theMesh = GetComponent<MeshFilter>().mesh;
-
-        MakeMesh(); // (Nick) i broke the mesh making into its own function
+        MakeMesh();
 	}
 	
 	// Update is called once per frame
@@ -29,6 +32,7 @@ public class MyMesh : MonoBehaviour {
 
         //REALLY bad idea (runs even we don't need it to)
         //BUT it shows that this stuff can change on the fly
+        textureRotation += 0.1f;
         MakeMesh();
 	}
 
@@ -53,19 +57,23 @@ public class MyMesh : MonoBehaviour {
             Debug.LogError("Invalid number of vertices!");
             return;
         }
+
         theMesh.Clear();    //clear out the existing mesh so we can replace it
 
         vertices = new Vector3[n * m];//new Vector3[9];   // 2x2 mesh needs 3x3 vertices
         triangles = new int[(n - 1) * (m - 1) * 2 * 3];//new int[8 * 3];         // Number of triangles: 2x2 mesh and 2x triangles on each mesh-unit
         normals = new Vector3[n * m];   // MUST be the same as number of vertices
+        uv = new Vector2[n * m];
 
         MakeVertices(2.0f, 2.0f);
         MakeNormals();
         MakeTriangles();
+        MakeUV();
 
         theMesh.vertices = vertices;
         theMesh.triangles = triangles;
         theMesh.normals = normals;
+        theMesh.uv = uv;
     }
 
     //right now this assumes a plane of size 1
@@ -127,6 +135,28 @@ public class MyMesh : MonoBehaviour {
                 triangles[idx++] = v1;
                 triangles[idx++] = v2;
                 triangles[idx++] = v3;
+            }
+        }
+    }
+
+    void MakeUV()
+    {
+        //Rotation needs to be about (0.5, 0.5)
+        Matrix3x3 pivot = Matrix3x3Helpers.CreateTranslation(new Vector2(-0.5f, -0.5f));
+        Matrix3x3 TRS = Matrix3x3Helpers.CreateTRS(textureOffset, textureRotation, textureScale);
+
+        for(int j = 0; j < m; j++)
+        {
+            float v = (float)j / (m - 1);
+            for (int i = 0; i < n; i++)
+            {
+                int index = j * n + i;
+                float u = (float)i / (n - 1);
+
+                uv[index] = Matrix3x3.MultiplyVector2(pivot, new Vector2(u, v));
+                uv[index] = Matrix3x3.MultiplyVector2(TRS, uv[index]);
+                uv[index] = Matrix3x3.MultiplyVector2(pivot.Invert(), uv[index]);
+
             }
         }
     }
