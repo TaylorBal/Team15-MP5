@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class MyMesh : MonoBehaviour {
 
-    public int n = 3;      //# of vertices horizontally (X local)
-    public int m = 3;      //# of vertices vertically (Y local)
+    public int n = 2;      //# of vertices horizontally (X local)
+    public int m = 2;      //# of vertices vertically (Y local)
 
     private Mesh theMesh = null;
 
