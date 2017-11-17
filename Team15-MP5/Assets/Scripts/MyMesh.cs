@@ -17,6 +17,9 @@ public class MyMesh : MonoBehaviour {
     private int[] triangles;
     private Vector3[] normals;
 
+    // 2D array of sphere handle prefabs
+    public GameObject[][] vertexHandles;
+
 	// Use this for initialization
 	void Start () {
         theMesh = GetComponent<MeshFilter>().mesh;
@@ -62,10 +65,12 @@ public class MyMesh : MonoBehaviour {
         MakeVertices(2.0f, 2.0f);
         MakeNormals();
         MakeTriangles();
+        MakeHandles();
 
         theMesh.vertices = vertices;
         theMesh.triangles = triangles;
         theMesh.normals = normals;
+        //theMesh.uv 
     }
 
     //right now this assumes a plane of size 1
@@ -128,6 +133,14 @@ public class MyMesh : MonoBehaviour {
                 triangles[idx++] = v2;
                 triangles[idx++] = v3;
             }
+        }
+    }
+
+    void MakeHandles()
+    {
+        if(vertexHandles.Length != n*m) //Number of vertex handles needs updating
+        {
+            
         }
     }
 }
