@@ -71,20 +71,14 @@ public class MyMesh : MonoBehaviour {
         MakeVertices(2.0f, 2.0f);
         MakeNormals();
         MakeTriangles();
-<<<<<<< HEAD
         MakeHandles();
-=======
         MakeUV();
->>>>>>> 3731ca9c8c2f9ca35a2edb33208cbbfd822652a8
 
         theMesh.vertices = vertices;
         theMesh.triangles = triangles;
         theMesh.normals = normals;
-<<<<<<< HEAD
         //theMesh.uv 
-=======
         theMesh.uv = uv;
->>>>>>> 3731ca9c8c2f9ca35a2edb33208cbbfd822652a8
     }
 
     //right now this assumes a plane of size 1
@@ -150,13 +144,11 @@ public class MyMesh : MonoBehaviour {
         }
     }
 
-<<<<<<< HEAD
     void MakeHandles()
     {
-        if(vertexHandles.Length != n*m) //Number of vertex handles needs updating
-        {
+
+    }
             
-=======
     void MakeUV()
     {
         //Rotation needs to be about (0.5, 0.5)
@@ -176,7 +168,6 @@ public class MyMesh : MonoBehaviour {
                 uv[index] = Matrix3x3.MultiplyVector2(pivot.Invert(), uv[index]);
 
             }
->>>>>>> 3731ca9c8c2f9ca35a2edb33208cbbfd822652a8
         }
     }
 }
