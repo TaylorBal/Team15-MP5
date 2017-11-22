@@ -25,10 +25,18 @@ public class MasterController : MonoBehaviour {
     public void ChangeN(float val)
     {
         theMesh.n = (int)val;
+
+        //theMesh.MakeMesh();
+        theMesh.ClearVertexHandles();
+        theMesh.MakeVertexHandles();
     }
 
     public void ChangeM(float val)
     {
         theMesh.m = (int)val;
+
+        //theMesh.MakeMesh();
+        theMesh.ClearVertexHandles();
+        theMesh.MakeVertexHandles();
     }
 }

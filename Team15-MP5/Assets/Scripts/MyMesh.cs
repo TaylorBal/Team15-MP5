@@ -12,6 +12,11 @@ public class MyMesh : MonoBehaviour {
     public Vector2 textureScale = new Vector2(1, 1);
     public float textureRotation = 0.0f;
 
+    // 2D array of sphere handle prefabs
+    public GameObject vertexHandleType;
+    public GameObject[,] vertexHandles;
+
+    //The Mesh
     private Mesh theMesh = null;
 
     //declare as class vars so we can modify and access without reallocating
@@ -21,12 +26,12 @@ public class MyMesh : MonoBehaviour {
     private Vector3[] normals;
     private Vector2[] uv;
 
-    // 2D array of sphere handle prefabs
-    public GameObject[][] vertexHandles;
-
 	// Use this for initialization
 	void Start () {
         theMesh = GetComponent<MeshFilter>().mesh;
+
+        MakeVertexHandles();
+
         MakeMesh();
 	}
 	
@@ -36,6 +41,7 @@ public class MyMesh : MonoBehaviour {
         //REALLY bad idea (runs even we don't need it to)
         //BUT it shows that this stuff can change on the fly
         textureRotation += 0.1f;
+
         MakeMesh();
 	}
 
@@ -53,7 +59,7 @@ public class MyMesh : MonoBehaviour {
         return true;
     }
 
-    void MakeMesh()
+    public void MakeMesh()
     {
         if(n < 2 || m < 2)
         {
@@ -71,13 +77,11 @@ public class MyMesh : MonoBehaviour {
         MakeVertices(2.0f, 2.0f);
         MakeNormals();
         MakeTriangles();
-        MakeHandles();
         MakeUV();
 
         theMesh.vertices = vertices;
         theMesh.triangles = triangles;
         theMesh.normals = normals;
-        //theMesh.uv 
         theMesh.uv = uv;
     }
 
@@ -143,11 +147,6 @@ public class MyMesh : MonoBehaviour {
             }
         }
     }
-
-    void MakeHandles()
-    {
-
-    }
             
     void MakeUV()
     {
@@ -167,6 +166,32 @@ public class MyMesh : MonoBehaviour {
                 uv[index] = Matrix3x3.MultiplyVector2(TRS, uv[index]);
                 uv[index] = Matrix3x3.MultiplyVector2(pivot.Invert(), uv[index]);
 
+            }
+        }
+    }
+
+    public void ClearVertexHandles()
+    {
+        GameObject[] allHandles = GameObject.FindGameObjectsWithTag("Handle");
+        for(int i = 0; i < allHandles.Length; i++)
+        {
+            Destroy(allHandles[i]);
+        }
+    }
+
+    public void MakeVertexHandles()
+    {
+        vertexHandles = new GameObject[n, m];
+
+        for (int i = 0; i < n; i++) //Increase n -> i goes farther
+        {
+            float xVal = -1.0f + i * 2.0f / (n - 1);
+
+            for (int j = 0; j < m; j++) //Increase m -> j goes farther
+            {
+                float zVal = -1.0f + j * 2.0f / (m - 1);
+
+                vertexHandles[i, j] = Instantiate(vertexHandleType, new Vector3(xVal, 0, zVal), Quaternion.identity);
             }
         }
     }
