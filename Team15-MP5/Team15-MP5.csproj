@@ -77,9 +77,12 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Library\Matrix3x3.cs" />
     <Compile Include="Assets\Scripts\Library\Matrix3x3Helpers.cs" />
-    <Compile Include="Assets\Scripts\MasterController.cs" />
     <Compile Include="Assets\Scripts\MyMesh.cs" />
+    <Compile Include="Assets\Scripts\UI Scripts\AxisBehavior.cs" />
+    <Compile Include="Assets\Scripts\UI Scripts\MasterController.cs" />
+    <Compile Include="Assets\Scripts\UI Scripts\MasterController_MouseSupport.cs" />
     <Compile Include="Assets\Scripts\UI Scripts\SliderWithEcho.cs" />
+    <Compile Include="Assets\Scripts\UI Scripts\VertexBehavior.cs" />
     <Compile Include="Assets\Scripts\UI Scripts\XfromControl.cs" />
   </ItemGroup>
   <ItemGroup>
