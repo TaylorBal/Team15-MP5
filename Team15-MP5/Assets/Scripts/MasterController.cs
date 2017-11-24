@@ -28,8 +28,6 @@ public partial class MasterController : MonoBehaviour {
     public Slider sliderN;
     public Slider sliderM;
 
-    
-
 	// Use this for initialization
 	void Start ()
     {

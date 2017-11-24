@@ -32,6 +32,9 @@ public class XfromControl : MonoBehaviour {
         X.InitSliderRange(-20, 20, p.x);
         Y.InitSliderRange(-20, 20, p.y);
         Z.InitSliderRange(-20, 20, p.z);
+        X.TheSlider.interactable = true;
+        Y.TheSlider.interactable = true;
+        Z.TheSlider.interactable = false;
     }
 
     void SetToScaling(bool v)
@@ -40,6 +43,9 @@ public class XfromControl : MonoBehaviour {
         X.InitSliderRange(0.1f, 20, s.x);
         Y.InitSliderRange(0.1f, 20, s.y);
         Z.InitSliderRange(0.1f, 20, s.z);
+        X.TheSlider.interactable = true;
+        Y.TheSlider.interactable = true;
+        Z.TheSlider.interactable = false;
     }
 
     void SetToRotation(bool v)
@@ -49,6 +55,9 @@ public class XfromControl : MonoBehaviour {
         Y.InitSliderRange(-180, 180, r.y);
         Z.InitSliderRange(-180, 180, r.z);
         mPreviousSliderValues = r;
+        X.TheSlider.interactable = false;
+        Y.TheSlider.interactable = false;
+        Z.TheSlider.interactable = true;
     }
 
     void XValueChanged(float v)
