@@ -19,7 +19,8 @@ public partial class MasterController : MonoBehaviour {
 
     //Plane Mesh
     public MyMesh MeshScript;
-    public GameObject MeshObject;
+    public GameObject PlaneMeshObject;
+    public GameObject CylinderMeshObject;
 
     //UI: Dropdown
     public Dropdown dropMode;
@@ -27,6 +28,7 @@ public partial class MasterController : MonoBehaviour {
     //UI: Resolution
     public Slider sliderN;
     public Slider sliderM;
+
 
 	// Use this for initialization
 	void Start ()
@@ -56,28 +58,30 @@ public partial class MasterController : MonoBehaviour {
     {
         if (mode == 0)
         {
-            MeshObject.SetActive(true);
+            MeshScript.Disable();
+            MeshScript = PlaneMeshObject.GetComponent<MyMesh>();
+            MeshScript.Enable();
         }
         else if (mode == 1)
         {
-            MeshObject.SetActive(false);
+            MeshScript.Disable();
+            MeshScript = CylinderMeshObject.GetComponent<MyMesh>();
+            MeshScript.Enable();
         }
     }
 
     public void ChangeN(float val)
     {
-        MeshScript.n = (int)val;
+        MeshScript.SetN((int)val);
 
-        //theMesh.MakeMesh();
         MeshScript.ClearVertexHandles();
         MeshScript.MakeVertexHandles();
     }
 
     public void ChangeM(float val)
     {
-        MeshScript.m = (int)val;
+        MeshScript.SetM((int)val);
 
-        //theMesh.MakeMesh();
         MeshScript.ClearVertexHandles();
         MeshScript.MakeVertexHandles();
     }

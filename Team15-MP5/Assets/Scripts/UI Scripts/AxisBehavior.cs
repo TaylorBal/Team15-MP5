@@ -12,16 +12,6 @@ public class AxisBehavior : MonoBehaviour {
     /// </summary>
     public int orientation = 0;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
-	}
-
     public int Select()
     {
         GetComponent<MeshRenderer>().material = selectMat;

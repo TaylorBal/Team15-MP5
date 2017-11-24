@@ -16,7 +16,7 @@
     <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
-    <UnityVersion>5.5.4f1</UnityVersion>
+    <UnityVersion>5.5.4p4</UnityVersion>
     <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
@@ -50,51 +50,40 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="UnityEngine">
-      <HintPath>C:/Program Files/Unity_554f1/Editor/Data/Managed/UnityEngine.dll</HintPath>
+      <HintPath>C:/Program Files/UnityForVR/Editor/Data/Managed/UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Program Files/Unity_554f1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Program Files/UnityForVR/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
-      <HintPath>C:/Program Files/Unity_554f1/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+      <HintPath>C:/Program Files/UnityForVR/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PlaymodeTestsRunner">
-      <HintPath>C:/Program Files/Unity_554f1/Editor/Data/UnityExtensions/Unity/PlaymodeTestsRunner/UnityEngine.PlaymodeTestsRunner.dll</HintPath>
+      <HintPath>C:/Program Files/UnityForVR/Editor/Data/UnityExtensions/Unity/PlaymodeTestsRunner/UnityEngine.PlaymodeTestsRunner.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Analytics">
-      <HintPath>C:/Program Files/Unity_554f1/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+      <HintPath>C:/Program Files/UnityForVR/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.HoloLens">
-      <HintPath>C:/Program Files/Unity_554f1/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+      <HintPath>C:/Program Files/UnityForVR/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VR">
-      <HintPath>C:/Program Files/Unity_554f1/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
+      <HintPath>C:/Program Files/UnityForVR/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>C:/Program Files/Unity_554f1/Editor/Data/Managed/UnityEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>C:/Program Files/Unity_554f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Common">
-      <HintPath>C:/Program Files/Unity_554f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Common.dll</HintPath>
+      <HintPath>C:/Program Files/UnityForVR/Editor/Data/Managed/UnityEditor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\CameraBehavior.cs" />
     <Compile Include="Assets\Scripts\Library\Matrix3x3.cs" />
     <Compile Include="Assets\Scripts\Library\Matrix3x3Helpers.cs" />
-<<<<<<< HEAD
     <Compile Include="Assets\Scripts\MasterController.cs" />
     <Compile Include="Assets\Scripts\MasterController_MouseSupport.cs" />
-    <Compile Include="Assets\Scripts\MyMesh.cs" />
-=======
     <Compile Include="Assets\Scripts\Mesh\CylMesh.cs" />
     <Compile Include="Assets\Scripts\Mesh\MyMesh.cs" />
     <Compile Include="Assets\Scripts\Mesh\PlaneMesh.cs" />
->>>>>>> 5b07a475fd426b90a4de9c234c4450c3c187264d
     <Compile Include="Assets\Scripts\UI Scripts\AxisBehavior.cs" />
-    <Compile Include="Assets\Scripts\UI Scripts\MasterController.cs" />
     <Compile Include="Assets\Scripts\UI Scripts\SliderWithEcho.cs" />
     <Compile Include="Assets\Scripts\UI Scripts\VertexBehavior.cs" />
     <Compile Include="Assets\Scripts\UI Scripts\XfromControl.cs" />
