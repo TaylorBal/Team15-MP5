@@ -1,0 +1,31 @@
+Initialize engine version: 5.5.4p4 (e92bef0ab5a4)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: AMD Radeon(TM) R4 Graphics (ID=0x9851)
+    Vendor:   ATI
+    VRAM:     1005 MB
+    Driver:   13.302.1904.0
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\ebald_000\Desktop\Fall 2017\MP5\Team15-MP5\Team15-MP5-EXE_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\ebald_000\Desktop\Fall 2017\MP5\Team15-MP5\Team15-MP5-EXE_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\ebald_000\Desktop\Fall 2017\MP5\Team15-MP5\Team15-MP5-EXE_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\ebald_000\Desktop\Fall 2017\MP5\Team15-MP5\Team15-MP5-EXE_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\ebald_000\Desktop\Fall 2017\MP5\Team15-MP5\Team15-MP5-EXE_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\ebald_000\Desktop\Fall 2017\MP5\Team15-MP5\Team15-MP5-EXE_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\ebald_000\Desktop\Fall 2017\MP5\Team15-MP5\Team15-MP5-EXE_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\ebald_000\Desktop\Fall 2017\MP5\Team15-MP5\Team15-MP5-EXE_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\ebald_000\Desktop\Fall 2017\MP5\Team15-MP5\Team15-MP5-EXE_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
+Loading C:\Users\ebald_000\Desktop\Fall 2017\MP5\Team15-MP5\Team15-MP5-EXE_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
+Platform assembly: C:\Users\ebald_000\Desktop\Fall 2017\MP5\Team15-MP5\Team15-MP5-EXE_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
+Loading C:\Users\ebald_000\Desktop\Fall 2017\MP5\Team15-MP5\Team15-MP5-EXE_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
+- Completed reload, in  0.053 seconds
+Platform assembly: C:\Users\ebald_000\Desktop\Fall 2017\MP5\Team15-MP5\Team15-MP5-EXE_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\ebald_000\Desktop\Fall 2017\MP5\Team15-MP5\Team15-MP5-EXE_Data\Managed\System.dll (this message is harmless)
+desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 4.716951 ms
+Setting up 1 worker threads for Enlighten.
+  Thread -> id: 11c0 -> priority: 1 
