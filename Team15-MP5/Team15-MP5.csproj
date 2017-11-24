@@ -86,7 +86,7 @@
     <Compile Include="Assets\Scripts\UI Scripts\AxisBehavior.cs" />
     <Compile Include="Assets\Scripts\UI Scripts\SliderWithEcho.cs" />
     <Compile Include="Assets\Scripts\UI Scripts\VertexBehavior.cs" />
-    <Compile Include="Assets\Scripts\UI Scripts\XfromControl.cs" />
+    <Compile Include="Assets\Scripts\UI Scripts\XformControl.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\ShaderWithoutCull.shader" />

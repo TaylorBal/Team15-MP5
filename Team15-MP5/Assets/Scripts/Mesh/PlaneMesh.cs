@@ -14,7 +14,11 @@ public class PlaneMesh : MyMesh {
 	
 	// Update is called once per frame
 	public override void Update () {
-        textureRotation += 0.1f;
+    }
+
+    public void Rotate(float val)
+    {
+        textureRotation = val;
         base.Update();
     }
 
