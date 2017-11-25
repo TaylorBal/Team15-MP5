@@ -79,7 +79,6 @@ public partial class MasterController : MonoBehaviour {
                             curManipAxis = manipAxis.nullAxis;
                             break;
                     };
-                    Debug.Log(curManipAxis);
                 }
             }
         }

@@ -15,12 +15,12 @@ public partial class MasterController : MonoBehaviour {
     AxisBehavior axisBehavior = null;
     public enum manipAxis { nullAxis, xAxis, yAxis, zAxis};
     manipAxis curManipAxis;
-    
 
-    //Plane Mesh
-    public MyMesh MeshScript;
+
+    //Meshes
+    public PlaneMesh planeMesh;
     public GameObject PlaneMeshObject;
-    public GameObject CylinderMeshObject;
+    public CylMesh cylMesh;
 
     //UI: Dropdown
     public Dropdown dropMode;
@@ -28,6 +28,10 @@ public partial class MasterController : MonoBehaviour {
     //UI: Resolution
     public Slider sliderN;
     public Slider sliderM;
+
+    //UI: XformControl
+    public XformControl xFormControl;
+
 
 	// Use this for initialization
 	void Start ()
@@ -41,6 +45,11 @@ public partial class MasterController : MonoBehaviour {
         //Resolution
         sliderN.onValueChanged.AddListener(ChangeN);
         sliderM.onValueChanged.AddListener(ChangeM);
+
+        //XformControl
+        xFormControl.X.TheSlider.onValueChanged.AddListener(xChanged);
+        xFormControl.Y.TheSlider.onValueChanged.AddListener(yChanged);
+        xFormControl.Z.TheSlider.onValueChanged.AddListener(zChanged);
 	}
 	
 	// Update is called once per frame
@@ -57,31 +66,64 @@ public partial class MasterController : MonoBehaviour {
     {
         if (mode == 0)
         {
-            MeshScript.Disable();
-            MeshScript = PlaneMeshObject.GetComponent<MyMesh>();
-            MeshScript.Enable();
+            planeMesh.Disable();
+            cylMesh.Enable();
+            
         }
         else if (mode == 1)
         {
-            MeshScript.Disable();
-            MeshScript = CylinderMeshObject.GetComponent<MyMesh>();
-            MeshScript.Enable();
+            cylMesh.Disable();
+            planeMesh.Enable();
         }
     }
 
     public void ChangeN(float val)
     {
-        MeshScript.SetN((int)val);
+        planeMesh.SetN((int)val);
 
-        MeshScript.ClearVertexHandles();
-        MeshScript.MakeVertexHandles();
+        planeMesh.ClearVertexHandles();
+        planeMesh.MakeVertexHandles();
     }
 
     public void ChangeM(float val)
     {
-        MeshScript.SetM((int)val);
+        planeMesh.SetM((int)val);
 
-        MeshScript.ClearVertexHandles();
-        MeshScript.MakeVertexHandles();
+        planeMesh.ClearVertexHandles();
+        planeMesh.MakeVertexHandles();
+    }
+
+    public void xChanged(float val)
+    {
+        if(xFormControl.curMode == XformControl.mode.translate)
+        {
+
+        }
+
+        if (xFormControl.curMode == XformControl.mode.scale)
+        {
+
+        }
+    }
+
+    public void yChanged(float val)
+    {
+        if (xFormControl.curMode == XformControl.mode.translate)
+        {
+
+        }
+
+        if (xFormControl.curMode == XformControl.mode.scale)
+        {
+
+        }
+    }
+
+    public void zChanged(float val)
+    {
+        if (xFormControl.curMode == XformControl.mode.rotate)
+        {
+            planeMesh.Rotate(val);
+        }
     }
 }
