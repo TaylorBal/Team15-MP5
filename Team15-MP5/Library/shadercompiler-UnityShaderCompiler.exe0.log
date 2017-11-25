@@ -1,2 +1,4 @@
-Base path: C:/Program Files/UnityForVR/Editor/Data
+Base path: C:/Program Files/Unity_554f1/Editor/Data
 Cmd: getPlatforms
+Cmd: preprocess
+  insize=1059 outsize=1187 ok=1

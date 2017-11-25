@@ -4,23 +4,33 @@ using UnityEngine;
 
 public class PlaneMesh : MyMesh {
 
-	// Use this for initialization
-	public override void Start ()
+    protected int n = 0;            //number of vertices (x-axis for plane, circle cross-section vertices in cylinder)
+    protected int m = 0;            //number of vertices (z-axis for plane, y-axis for cylinder)
+    protected int minN = 0;         //the minimum value of n (and m) that makes sense
+    protected int minM = 0;
+
+    // Use this for initialization
+    public override void Start ()
     {
         meshType = MeshType.Plane;
         minN = minM = 2;
+
+        if (n < minN)
+            n = minN;
+        if (m < minM)
+            m = minM;
+
         base.Start();
     }
 	
 	// Update is called once per frame
 	public override void Update () {
-    }
-
-    public void Rotate(float val)
-    {
-        textureRotation = val;
         base.Update();
     }
+
+    /******************
+    * MESH MANAGEMENT
+    * ****************/
 
     protected override void AllocateMeshData()
     {
@@ -90,6 +100,51 @@ public class PlaneMesh : MyMesh {
 
     protected override void MakeUV()
     {
-        base.MakeUV();
+        //Rotation needs to be about (0.5, 0.5)
+        Matrix3x3 pivot = Matrix3x3Helpers.CreateTranslation(new Vector2(-0.5f, -0.5f));
+        Matrix3x3 TRS = Matrix3x3Helpers.CreateTRS(textureOffset, textureRotation, textureScale);
+
+        for (int i = 0; i < m; i++)
+        {
+            float v = 1.0f - (float)i / (m - 1);
+            for (int j = 0; j < n; j++)
+            {
+                int index = i * n + j;
+                float u = 1.0f - (float)j / (n - 1);
+
+                uv[index] = Matrix3x3.MultiplyVector2(pivot, new Vector2(u, v));
+                uv[index] = Matrix3x3.MultiplyVector2(TRS, uv[index]);
+                uv[index] = Matrix3x3.MultiplyVector2(pivot.Invert(), uv[index]);
+
+            }
+        }
     }
+
+    /*  **********
+    * ACCESSORS
+    * ***********/
+
+    public bool SetN(int newN)
+    {
+        if (newN < minN)
+            return false;
+
+        n = newN;
+        MakeMesh();
+        return true;
+    }
+
+    public int GetN() { return n; }
+
+    public bool SetM(int newM)
+    {
+        if (newM < minM)
+            return false;
+
+        m = newM;
+        MakeMesh();
+        return true;
+    }
+
+    public int GetM() { return m; }
 }

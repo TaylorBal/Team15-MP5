@@ -18,9 +18,10 @@ public partial class MasterController : MonoBehaviour {
 
 
     //Meshes
-    public PlaneMesh planeMesh;
     public GameObject PlaneMeshObject;
+    public PlaneMesh planeMesh;
     public CylMesh cylMesh;
+    MeshType curMesh = MeshType.Plane;
 
     //UI: Dropdown
     public Dropdown dropMode;
@@ -28,6 +29,10 @@ public partial class MasterController : MonoBehaviour {
     //UI: Resolution
     public Slider sliderN;
     public Slider sliderM;
+
+    //Cylinder Sliders
+    public Slider sliderCylinderRes;
+    public Slider sliderCylinderRot;
 
     //UI: XformControl
     public XformControl xFormControl;
@@ -45,6 +50,14 @@ public partial class MasterController : MonoBehaviour {
         //Resolution
         sliderN.onValueChanged.AddListener(ChangeN);
         sliderM.onValueChanged.AddListener(ChangeM);
+        sliderN.value = planeMesh.GetN();
+        sliderM.value = planeMesh.GetM();
+
+        //Cylinder Sliders
+        sliderCylinderRes.onValueChanged.AddListener(ChangeCylRes);
+        sliderCylinderRot.onValueChanged.AddListener(ChangeCylRot);
+        sliderCylinderRes.value = cylMesh.GetCircleRes();
+        sliderCylinderRot.value = cylMesh.GetRotation();
 
         //XformControl
         xFormControl.X.TheSlider.onValueChanged.AddListener(xChanged);
@@ -66,14 +79,15 @@ public partial class MasterController : MonoBehaviour {
     {
         if (mode == 0)
         {
-            planeMesh.Disable();
-            cylMesh.Enable();
-            
+            cylMesh.Disable();
+            planeMesh.Enable();
+            curMesh = MeshType.Plane;
         }
         else if (mode == 1)
         {
-            cylMesh.Disable();
-            planeMesh.Enable();
+            planeMesh.Disable();
+            cylMesh.Enable();
+            curMesh = MeshType.Cylinder;
         }
     }
 
@@ -81,28 +95,50 @@ public partial class MasterController : MonoBehaviour {
     {
         planeMesh.SetN((int)val);
 
-        planeMesh.ClearVertexHandles();
-        planeMesh.MakeVertexHandles();
+        if (curMesh == MeshType.Plane)
+            planeMesh.UpdateVertexHandles();
     }
 
     public void ChangeM(float val)
     {
         planeMesh.SetM((int)val);
 
-        planeMesh.ClearVertexHandles();
-        planeMesh.MakeVertexHandles();
+        if(curMesh == MeshType.Plane)
+            planeMesh.UpdateVertexHandles();
+    }
+
+    public void ChangeCylRes(float val)
+    {
+        cylMesh.SetCircleRes((int)val);
+
+        if (curMesh == MeshType.Cylinder)
+            cylMesh.UpdateVertexHandles();
+    }
+
+    public void ChangeCylRot(float val)
+    {
+        cylMesh.SetRotation(val);
+
+        if(curMesh == MeshType.Cylinder)
+            cylMesh.UpdateVertexHandles();
     }
 
     public void xChanged(float val)
     {
         if(xFormControl.curMode == XformControl.mode.translate)
         {
-
+            if (curMesh == MeshType.Plane)
+                planeMesh.textureOffset.x = val;
+            else if (curMesh == MeshType.Cylinder)
+                cylMesh.textureOffset.x = val;
         }
 
         if (xFormControl.curMode == XformControl.mode.scale)
         {
-
+            if (curMesh == MeshType.Plane)
+                planeMesh.textureScale.x = val;
+            else if (curMesh == MeshType.Cylinder)
+                cylMesh.textureScale.x = val;
         }
     }
 
@@ -110,12 +146,18 @@ public partial class MasterController : MonoBehaviour {
     {
         if (xFormControl.curMode == XformControl.mode.translate)
         {
-
+            if (curMesh == MeshType.Plane)
+                planeMesh.textureOffset.y = val;
+            else if (curMesh == MeshType.Cylinder)
+                cylMesh.textureOffset.y = val;
         }
 
         if (xFormControl.curMode == XformControl.mode.scale)
         {
-
+            if (curMesh == MeshType.Plane)
+                planeMesh.textureScale.y = val;
+            else if (curMesh == MeshType.Cylinder)
+                cylMesh.textureScale.y = val;
         }
     }
 
@@ -123,7 +165,10 @@ public partial class MasterController : MonoBehaviour {
     {
         if (xFormControl.curMode == XformControl.mode.rotate)
         {
-            planeMesh.Rotate(val);
+            if (curMesh == MeshType.Plane)
+                planeMesh.textureRotation = val;
+            if (curMesh == MeshType.Cylinder)
+                cylMesh.textureRotation = val;
         }
     }
 }

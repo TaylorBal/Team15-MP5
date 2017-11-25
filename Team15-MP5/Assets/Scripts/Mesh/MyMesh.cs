@@ -24,13 +24,9 @@ public class MyMesh : MonoBehaviour {
 
     // 2D array of sphere handle prefabs
     public GameObject vertexHandleType;
-    public GameObject[,] vertexHandles;
+    public GameObject[] vertexHandles;
 
-    protected int n = 0;            //number of vertices (x-axis for plane, circle cross-section vertices in cylinder)
-    protected int m = 0;            //number of vertices (z-axis for plane, y-axis for cylinder)
-    protected int minN = 0;         //the minimum value of n (and m) that makes sense
-    protected int minM = 0;
-
+    // Kind of a proto-transform for the texture
     public Vector2 textureOffset = new Vector2(0, 0);
     public Vector2 textureScale = new Vector2(1, 1);
     public float textureRotation = 0.0f;
@@ -39,11 +35,6 @@ public class MyMesh : MonoBehaviour {
     public virtual void Start()
     {
         theMesh = GetComponent<MeshFilter>().mesh;
-
-        if (n < minN)
-            n = minN;
-        if (m < minM)
-            m = minM;
 
         MakeMesh();
         MakeVertexHandles();
@@ -75,7 +66,14 @@ public class MyMesh : MonoBehaviour {
 
     protected void MakeMesh()
     {
-        theMesh.Clear();
+        if (theMesh == null)
+        {
+            theMesh = GetComponent<MeshFilter>().mesh;
+        }
+        else
+        {
+            theMesh.Clear();
+        }
 
         if (meshType == MeshType.None)
             return;
@@ -114,7 +112,6 @@ public class MyMesh : MonoBehaviour {
         MakeUV();
     }
 
-
     protected virtual void AllocateMeshData() { }
 
     protected virtual void MakeVertices() { }
@@ -123,27 +120,7 @@ public class MyMesh : MonoBehaviour {
 
     protected virtual void MakeNormals() { }
 
-    protected virtual void MakeUV()
-    {
-        //Rotation needs to be about (0.5, 0.5)
-        Matrix3x3 pivot = Matrix3x3Helpers.CreateTranslation(new Vector2(-0.5f, -0.5f));
-        Matrix3x3 TRS = Matrix3x3Helpers.CreateTRS(textureOffset, textureRotation, textureScale);
-
-        for (int i = 0; i < m; i++)
-        {
-            float v = 1.0f - (float)i / (m - 1);
-            for (int j = 0; j < n; j++)
-            {
-                int index = i * n + j;
-                float u = 1.0f - (float)j / (n - 1);
-
-                uv[index] = Matrix3x3.MultiplyVector2(pivot, new Vector2(u, v));
-                uv[index] = Matrix3x3.MultiplyVector2(TRS, uv[index]);
-                uv[index] = Matrix3x3.MultiplyVector2(pivot.Invert(), uv[index]);
-
-            }
-        }
-    }
+    protected virtual void MakeUV() { }
 
     public void ClearVertexHandles()
     {
@@ -156,58 +133,30 @@ public class MyMesh : MonoBehaviour {
 
     public void MakeVertexHandles()
     {
-        vertexHandles = new GameObject[n, m];
+        vertexHandles = new GameObject[vertices.Length];
 
-        /* for (int i = 0; i < n; i++) //Increase n -> i goes farther
-         {
-             float xVal = -1.0f + i * 2.0f / (n - 1);
-
-             for (int j = 0; j < m; j++) //Increase m -> j goes farther
-             {
-                 float zVal = -1.0f + j * 2.0f / (m - 1);
-
-                 vertexHandles[i, j] = Instantiate(vertexHandleType, new Vector3(xVal, 0, zVal), Quaternion.identity);
-             }
-         }*/
-
-        for (int i = 0; i < m; i++)
+        for(int i = 0; i < vertexHandles.Length; i++)
         {
-            for(int j = 0; j < n; j++)
-            {
-                int index = i * n + j;
-                Quaternion q = Quaternion.FromToRotation(Vector3.up, normals[index]);       //this isn't correct but it gets us in the ballpark
-                vertexHandles[j, i] = Instantiate(vertexHandleType, vertices[index], q);
-            }
+            
+            vertexHandles[i] = Instantiate(vertexHandleType, vertices[i], Quaternion.identity);
+
+            Quaternion outRot = Quaternion.FromToRotation(vertexHandles[i].transform.up, normals[i]);
+
+            vertexHandles[i].transform.localRotation *= outRot;
+            //Vector3 left = Vector3.Cross(transform.up, vertexHandles[i].transform.forward);
         }
+    }
+
+    public void UpdateVertexHandles()
+    {
+        //we can make this more efficient, but for now...
+        ClearVertexHandles();
+        MakeVertexHandles();
     }
 
     /*  **********
      * ACCESSORS
      * ***********/
-
-    public bool SetN(int newN)
-    {
-        if (newN < minN)
-            return false;
-
-        n = newN;
-        MakeMesh();
-        return true;
-    }
-
-    public int GetN() { return n; }
-
-    public bool SetM(int newM)
-    {
-        if (newM < minM)
-            return false;
-
-        m = newM;
-        MakeMesh();
-        return true;
-    }
-
-    public int GetM() { return m; }
 
     public bool SetVertex(int index, Vector3 vertex)
     {
