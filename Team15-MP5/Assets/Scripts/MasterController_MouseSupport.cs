@@ -28,7 +28,7 @@ public partial class MasterController : MonoBehaviour {
     void SelectAnObject()
     {
         RaycastHit hitInfo = new RaycastHit();
-        bool hit = Physics.Raycast(MainCamera.ScreenPointToRay(Input.mousePosition), out hitInfo, Mathf.Infinity, 1);
+        bool hit = Physics.Raycast(MainCamera.ScreenPointToRay(Input.mousePosition), out hitInfo, Mathf.Infinity, LayerMask.GetMask("VertManip"));
         //1 is mask for default layer
 
         if (hit) //hit vertex and axes
