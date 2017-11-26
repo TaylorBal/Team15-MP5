@@ -35,7 +35,6 @@ public partial class MyMesh : MonoBehaviour {
     public virtual void Start()
     {
         theMesh = GetComponent<MeshFilter>().mesh;
-
         MakeMesh();
         MakeVertexHandles();
     }
@@ -51,12 +50,12 @@ public partial class MyMesh : MonoBehaviour {
     public void Enable()
     {
         gameObject.SetActive(true);
-        Start();
+        ShowVertexHandles();
     }
 
     public void Disable()
     {
-        ClearVertexHandles();
+        HideVertexHandles();
         gameObject.SetActive(false);
     }
 
@@ -91,6 +90,8 @@ public partial class MyMesh : MonoBehaviour {
         UpdateNormals();
         MakeUV();
 
+        theMesh.vertices = vertices;
+        theMesh.triangles = triangles;
         theMesh.normals = normals;
         theMesh.uv = uv;
     }
@@ -175,26 +176,8 @@ public partial class MyMesh : MonoBehaviour {
         }
     }
     
-    public void MakeVertexHandles()
+    public virtual void MakeVertexHandles()
     {
-        vertexHandles = new GameObject[vertices.Length];
-
-        Matrix4x4 LtW = transform.localToWorldMatrix;
-
-        for(int i = 0; i < vertexHandles.Length; i++)
-        {
-            
-            vertexHandles[i] = Instantiate(vertexHandleType, LtW * vertices[i], Quaternion.identity);
-
-            Quaternion outRot = Quaternion.FromToRotation(vertexHandles[i].transform.up, normals[i]);
-            vertexHandles[i].transform.localRotation *= outRot;
-
-            /*Vector3 right = Vector3.Cross(transform.up, normals[i]);
-            float angle = Vector3.Angle(vertexHandles[i].transform.right, right);
-            Quaternion rotate = Quaternion.AngleAxis(angle, vertexHandles[i].transform.up);
-
-            vertexHandles[i].transform.localRotation *= rotate;*/
-        }
     }
 
     public void UpdateVertexHandles()
@@ -202,6 +185,18 @@ public partial class MyMesh : MonoBehaviour {
         //we can make this more efficient, but for now...
         ClearVertexHandles();
         MakeVertexHandles();
+    }
+
+    private void HideVertexHandles()
+    {
+        foreach (GameObject g in vertexHandles)
+            g.SetActive(false);
+    }
+
+    private void ShowVertexHandles()
+    {
+        foreach (GameObject g in vertexHandles)
+            g.SetActive(true);
     }
 
     /*  **********
@@ -229,9 +224,11 @@ public partial class MyMesh : MonoBehaviour {
         return true;
     }
 
-    public void MoveVertex(int index, ref Vector3 delta)
+    public virtual void MoveVertex(int index, Vector3 delta)
     {
         vertices[index] += delta;
+        //UpdateMesh();
+        vertexHandles[index].transform.localPosition = transform.localToWorldMatrix * vertices[index];
     }
 
     public bool GetNormal(int index, ref Vector3 normal)

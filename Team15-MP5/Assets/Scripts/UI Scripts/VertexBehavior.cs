@@ -11,10 +11,15 @@ public class VertexBehavior : MonoBehaviour {
     private GameObject axes;
     private bool hasAxes = false; //prevents multiple axes instantiating
 
+    //necessary variables for manipulation
+    private MyMesh manipMesh = null;
+    public int vertIndex = -1;
+    private bool selectable = true;
+
 	// Use this for initialization
 	void Start () {
 	}
-	
+
 	// Update is called once per frame
 	void Update ()
     {
@@ -22,9 +27,18 @@ public class VertexBehavior : MonoBehaviour {
         if (hasAxes)
         {
             axes.transform.localPosition = transform.localPosition;
-            axes.transform.localRotation = transform.localRotation;
+            //axes.transform.localRotation = transform.localRotation;
         }
 	}
+
+    //Set the values necessary to manipulate our mesh
+    //TODO: set material according to selectable status
+    public void Init(MyMesh mesh, int index, bool selectable = true)
+    {
+        manipMesh = mesh;
+        vertIndex = index;
+        this.selectable = selectable;
+    }
 
     public void Select()
     {
@@ -45,4 +59,30 @@ public class VertexBehavior : MonoBehaviour {
             hasAxes = false;
         }
     }
+
+    public void MoveX(float deltaX)
+    {
+        if (manipMesh != null)
+        {
+            manipMesh.MoveVertex(vertIndex, deltaX * Vector3.right);
+        }
+    }
+
+    public void MoveY(float deltaY)
+    {
+        if (manipMesh != null)
+        {
+            manipMesh.MoveVertex(vertIndex, deltaY * Vector3.up);
+        }
+    }
+
+    public void MoveZ(float deltaZ)
+    {
+        if (manipMesh != null)
+        {
+            manipMesh.MoveVertex(vertIndex, deltaZ * Vector3.forward);
+        }
+    }
+
+    public bool IsSelectable() { return selectable; }
 }

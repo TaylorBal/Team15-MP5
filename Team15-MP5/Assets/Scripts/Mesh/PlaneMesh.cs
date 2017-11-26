@@ -112,6 +112,19 @@ public class PlaneMesh : MyMesh {
         }
     }
 
+    public override void MakeVertexHandles()
+    {
+        vertexHandles = new GameObject[vertices.Length];
+
+        Matrix4x4 LtW = transform.localToWorldMatrix;
+        for (int i = 0; i < vertexHandles.Length; i++)
+        {
+            vertexHandles[i] = Instantiate(vertexHandleType, LtW * vertices[i], Quaternion.identity);
+            VertexBehavior vb = vertexHandles[i].GetComponent<VertexBehavior>();
+            vb.Init(this, i, true);
+        }
+    }
+
     /*  **********
     * ACCESSORS
     * ***********/
@@ -148,5 +161,10 @@ public class PlaneMesh : MyMesh {
     public bool GetNormal_NM(int nIndex, int mIndex, ref Vector3 normal)
     {
         return GetNormal(NMtoIdx(nIndex, mIndex), ref normal);
+    }
+
+    public override void MoveVertex(int index, Vector3 delta)
+    {
+        base.MoveVertex(index, delta);
     }
 }

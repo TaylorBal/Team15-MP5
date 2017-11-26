@@ -114,6 +114,26 @@ public class CylMesh : MyMesh
         }
     }
 
+    public override void MakeVertexHandles()
+    {
+        vertexHandles = new GameObject[vertices.Length];
+
+        Matrix4x4 LtW = transform.localToWorldMatrix;
+        for (int i = 0; i < vertexHandles.Length; i++)
+        {
+            vertexHandles[i] = Instantiate(vertexHandleType, LtW * vertices[i], Quaternion.identity);
+
+            Quaternion q = Quaternion.LookRotation(-transform.up, normals[i]);
+            vertexHandles[i].transform.localRotation = q;
+
+            VertexBehavior vb = vertexHandles[i].GetComponent<VertexBehavior>();
+
+            //you can only select the first of each row
+            bool selectable = i % circleRes == 0;
+            vb.Init(this, i, selectable);
+        }
+    }
+
     /*  **********
     * ACCESSORS
     * ***********/
@@ -165,4 +185,12 @@ public class CylMesh : MyMesh
     }
 
     public int GetVertRes() { return vertRes; }
+
+    public override void MoveVertex(int index, Vector3 delta)
+    {
+        //this vertex is connected to all the others in its row
+        //in this case guaranteed to be the first in the row
+        for(int i = 0; i < circleRes; i++)
+            base.MoveVertex(index + i, delta);
+    }
 }

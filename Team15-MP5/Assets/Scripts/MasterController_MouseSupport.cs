@@ -4,6 +4,8 @@ using UnityEngine;
 
 public partial class MasterController : MonoBehaviour {
 
+    public Vector3 mouseSensitivity = new Vector3(1.0f, 1.0f, 1.0f);
+
     /// <summary>
     ///  0 = null; 1 = x; 2 = y; 3 = z
     /// </summary>
@@ -11,10 +13,16 @@ public partial class MasterController : MonoBehaviour {
 
     void LMBService()
     {
-        if(Input.GetMouseButtonDown(0) || Input.GetMouseButton(0))
+        if(Input.GetMouseButtonDown(0))
         {
             SelectAnObject();
         }
+        else if(Input.GetMouseButton(0))
+        {
+            DragVert();
+        }
+
+        //ProcessCameraInput()
     }
 
     void SelectAnObject()
@@ -28,28 +36,34 @@ public partial class MasterController : MonoBehaviour {
             //Select vertex
             if (hitInfo.transform.gameObject.tag == "Handle")
             {
-                //Deselect any object currently selected
-                if (vertBehavior != null)
-                {
-                    vertBehavior.Deselect();
-                    vertBehavior = null;
-                    vertHandle = null;
-                }
-                if (axisBehavior != null)
-                {
-                    axisBehavior.Deselect();
-                    axisBehavior = null;
-                    axis = null;
-                }
+                GameObject newHandle = hitInfo.transform.gameObject;
+                VertexBehavior newVB = newHandle.GetComponent<VertexBehavior>();
 
-                vertHandle = hitInfo.transform.gameObject;
-                vertBehavior = vertHandle.GetComponent<VertexBehavior>();
-                if (vertBehavior != null)
-                    vertBehavior.Select();
+                if (newVB.IsSelectable())
+                {
+                    //Deselect any object currently selected
+                    if (vertBehavior != null)
+                    {
+                        vertBehavior.Deselect();
+                        vertBehavior = null;
+                        vertHandle = null;
+                    }
+                    if (axisBehavior != null)
+                    {
+                        axisBehavior.Deselect();
+                        axisBehavior = null;
+                        axis = null;
+                    }
+
+                    vertHandle = newHandle;
+                    vertBehavior = newVB;
+                    if (vertBehavior != null)
+                        vertBehavior.Select();
+                }
             }
 
             //Select axes
-            if(hitInfo.transform.gameObject.tag == "Axes")
+            else if(hitInfo.transform.gameObject.tag == "Axes")
             {
                 //Deselect any axis currently selected
                 if (axisBehavior != null)
@@ -98,6 +112,37 @@ public partial class MasterController : MonoBehaviour {
                 axisBehavior = null;
                 axis = null;
             }
+        }
+    }
+
+    private void DragVert()
+    {
+        //find the delta mouse
+        Vector3 deltaMouse;
+        deltaMouse.x = Input.GetAxis("Mouse X");
+        deltaMouse.y = Input.GetAxis("Mouse Y");
+        deltaMouse.z = Input.GetAxis("Mouse ScrollWheel");     //Input.mouseposition only stores in x, y
+
+        deltaMouse.x *= mouseSensitivity.x;
+        deltaMouse.y *= mouseSensitivity.y;
+        deltaMouse.z *= mouseSensitivity.z;
+
+        if (vertBehavior == null)
+            return;
+
+        switch(curManipAxis)
+        {
+            case manipAxis.xAxis:
+                vertBehavior.MoveX(deltaMouse.x * mouseSensitivity.x);
+                break;
+            case manipAxis.yAxis:
+                vertBehavior.MoveY(deltaMouse.y * mouseSensitivity.y);
+                break;
+            case manipAxis.zAxis:
+                vertBehavior.MoveZ(deltaMouse.z * mouseSensitivity.z);
+                break;
+            case manipAxis.nullAxis:
+                break;
         }
     }
 }

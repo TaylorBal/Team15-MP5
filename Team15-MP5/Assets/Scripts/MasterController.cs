@@ -63,6 +63,8 @@ public partial class MasterController : MonoBehaviour {
         xFormControl.X.TheSlider.onValueChanged.AddListener(xChanged);
         xFormControl.Y.TheSlider.onValueChanged.AddListener(yChanged);
         xFormControl.Z.TheSlider.onValueChanged.AddListener(zChanged);
+
+        ChangeMode(dropMode.value);
 	}
 	
 	// Update is called once per frame
