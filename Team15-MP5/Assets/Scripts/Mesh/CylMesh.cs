@@ -32,7 +32,7 @@ public class CylMesh : MyMesh
     protected override void AllocateMeshData()
     {
         vertices = new Vector3[circleRes * vertRes];
-        triangles = new int[(circleRes - 1) * (vertRes - 1) * 2 * 3];           
+        triangles = new int[(circleRes - 1) * (vertRes - 1) * 2 * 3];
         normals = new Vector3[vertices.Length];                         // MUST be the same as number of vertices
         uv = new Vector2[vertices.Length];                              //same as the number of vertices
     }
@@ -61,6 +61,7 @@ public class CylMesh : MyMesh
     protected override void MakeTriangles()
     {
         int idx = 0;
+
         int v1, v2, v3;
 
         for(int i = 0; i < vertRes - 1; i++)
@@ -88,14 +89,6 @@ public class CylMesh : MyMesh
                 triangles[idx++] = v2;
                 triangles[idx++] = v3;
             }
-        }
-    }
-
-    protected override void MakeNormals()
-    {
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            normals[i] = new Vector3(vertices[i].x, 0, vertices[i].z).normalized;
         }
     }
 

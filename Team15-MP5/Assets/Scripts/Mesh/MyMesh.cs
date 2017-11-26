@@ -10,7 +10,7 @@ public enum MeshType
     Cylinder
 };
 
-public class MyMesh : MonoBehaviour {
+public partial class MyMesh : MonoBehaviour {
 
     //what type of mesh this is
     protected MeshType meshType = MeshType.None;
@@ -50,8 +50,8 @@ public class MyMesh : MonoBehaviour {
 
     public void Enable()
     {
-        Start();
         gameObject.SetActive(true);
+        Start();
     }
 
     public void Disable()
@@ -88,7 +88,7 @@ public class MyMesh : MonoBehaviour {
         if (meshType == MeshType.None)
             return;
 
-        MakeNormals();
+        UpdateNormals();
         MakeUV();
 
         theMesh.normals = normals;
@@ -118,7 +118,51 @@ public class MyMesh : MonoBehaviour {
 
     protected virtual void MakeTriangles() { }
 
-    protected virtual void MakeNormals() { }
+    private void MakeNormals() {
+
+        faceNormals = new Vector3[triangles.Length / 3];
+        adjFaces = new List<int>[vertices.Length];
+        for (int i = 0; i < adjFaces.Length; i++)
+            adjFaces[i] = new List<int>();
+
+        //first calculate face normals
+        for(int i = 0; i < triangles.Length / 3; i++)
+        {
+            int idx = i * 3;
+            faceNormals[i] = ComputeFaceNormal(triangles[idx], triangles[idx + 1], triangles[idx + 2]);
+
+            //for each vertex in the triangle
+            //add the triangle to the vertex's list for computing vertex normals
+            for(int j = 0; j < 3; j++)
+            {
+                int vnIdx = triangles[idx + j];
+                adjFaces[vnIdx].Add(i);
+            }
+        }
+
+        //use the face normals to calculate vertex normals
+        for(int i = 0; i < adjFaces.Length; i++)
+        {
+            normals[i] = ComputeVertexNormal(i, adjFaces[i], faceNormals);
+        }
+    }
+
+    private void UpdateNormals()
+    {
+
+        //first calculate face normals
+        for (int i = 0; i < triangles.Length / 3; i++)
+        {
+            int idx = i * 3;
+            faceNormals[i] = ComputeFaceNormal(triangles[idx], triangles[idx + 1], triangles[idx + 2]);
+        }
+
+        //use the face normals to calculate vertex normals
+        for (int i = 0; i < adjFaces.Length; i++)
+        {
+            normals[i] = ComputeVertexNormal(i, adjFaces[i], faceNormals);
+        }
+    }
 
     protected virtual void MakeUV() { }
 
@@ -130,20 +174,26 @@ public class MyMesh : MonoBehaviour {
             Destroy(allHandles[i]);
         }
     }
-
+    
     public void MakeVertexHandles()
     {
         vertexHandles = new GameObject[vertices.Length];
 
+        Matrix4x4 LtW = transform.localToWorldMatrix;
+
         for(int i = 0; i < vertexHandles.Length; i++)
         {
             
-            vertexHandles[i] = Instantiate(vertexHandleType, vertices[i], Quaternion.identity);
+            vertexHandles[i] = Instantiate(vertexHandleType, LtW * vertices[i], Quaternion.identity);
 
             Quaternion outRot = Quaternion.FromToRotation(vertexHandles[i].transform.up, normals[i]);
-
             vertexHandles[i].transform.localRotation *= outRot;
-            //Vector3 left = Vector3.Cross(transform.up, vertexHandles[i].transform.forward);
+
+            /*Vector3 right = Vector3.Cross(transform.up, normals[i]);
+            float angle = Vector3.Angle(vertexHandles[i].transform.right, right);
+            Quaternion rotate = Quaternion.AngleAxis(angle, vertexHandles[i].transform.up);
+
+            vertexHandles[i].transform.localRotation *= rotate;*/
         }
     }
 
@@ -179,13 +229,9 @@ public class MyMesh : MonoBehaviour {
         return true;
     }
 
-    public bool SetNormal(int index, Vector3 normal)
+    public void MoveVertex(int index, ref Vector3 delta)
     {
-        if (index < 0 || index >= normals.Length)
-            return false;
-
-        normals[index] = normal;
-        return true;
+        vertices[index] += delta;
     }
 
     public bool GetNormal(int index, ref Vector3 normal)
@@ -199,4 +245,5 @@ public class MyMesh : MonoBehaviour {
         normal = normals[index];
         return true;
     }
+
 }

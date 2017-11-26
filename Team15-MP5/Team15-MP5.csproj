@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.5.4f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -88,6 +90,7 @@
     <Compile Include="Assets\Scripts\MasterController_MouseSupport.cs" />
     <Compile Include="Assets\Scripts\Mesh\CylMesh.cs" />
     <Compile Include="Assets\Scripts\Mesh\MyMesh.cs" />
+    <Compile Include="Assets\Scripts\Mesh\MyMesh_NormalSupport.cs" />
     <Compile Include="Assets\Scripts\Mesh\PlaneMesh.cs" />
     <Compile Include="Assets\Scripts\UI Scripts\AxisBehavior.cs" />
     <Compile Include="Assets\Scripts\UI Scripts\SliderWithEcho.cs" />

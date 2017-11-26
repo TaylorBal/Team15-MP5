@@ -44,14 +44,14 @@ public class PlaneMesh : MyMesh {
     {
         for (int i = 0; i < m; i++)
         {
-            float yVal = 0.5f - i * (1.0f / (m - 1));
+            float zVal = 0.5f - i * (1.0f / (m - 1));
 
             for (int j = 0; j < n; j++)
             {
                 float xVal = -0.5f + j * (1.0f / (n - 1));
 
                 int index = i * n + j;
-                vertices[index] = new Vector3(xVal, yVal, 0);
+                vertices[index] = new Vector3(xVal, 0, zVal);
             }
         }
     }
@@ -87,14 +87,6 @@ public class PlaneMesh : MyMesh {
                 triangles[idx++] = v2;
                 triangles[idx++] = v3;
             }
-        }
-    }
-
-    protected override void MakeNormals()
-    {
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            normals[i] = new Vector3(0, 0, 1);
         }
     }
 
@@ -147,4 +139,14 @@ public class PlaneMesh : MyMesh {
     }
 
     public int GetM() { return m; }
+
+    public int NMtoIdx(int nIndex, int mIndex)
+    {
+        return nIndex * m + mIndex;
+    }
+
+    public bool GetNormal_NM(int nIndex, int mIndex, ref Vector3 normal)
+    {
+        return GetNormal(NMtoIdx(nIndex, mIndex), ref normal);
+    }
 }
