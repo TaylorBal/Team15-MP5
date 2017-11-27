@@ -7,6 +7,7 @@ public partial class MasterController : MonoBehaviour {
 
     //Camera
     public Camera MainCamera = null;
+    private MainCameraController CamControl = null;
 
     //Vertex Handle and Axis selection
     GameObject vertHandle = null;
@@ -43,6 +44,7 @@ public partial class MasterController : MonoBehaviour {
     {
         //Camera
         Debug.Assert(MainCamera != null);
+        CamControl = MainCamera.GetComponent<MainCameraController>();
 
         //Mode
         dropMode.onValueChanged.AddListener(ChangeMode);

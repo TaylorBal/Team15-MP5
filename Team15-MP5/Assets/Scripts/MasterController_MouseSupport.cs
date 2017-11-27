@@ -5,6 +5,8 @@ using UnityEngine;
 public partial class MasterController : MonoBehaviour {
 
     public Vector3 mouseSensitivity = new Vector3(1.0f, 1.0f, 1.0f);
+    public Vector3 cameraSensitivity = new Vector3(1.0f, 1.0f, 1.0f);
+    //public CamModeIndicator modeIndicator = null;
 
     /// <summary>
     ///  0 = null; 1 = x; 2 = y; 3 = z
@@ -22,21 +24,42 @@ public partial class MasterController : MonoBehaviour {
             DragVert();
         }
 
-        //ProcessCameraInput()
+        ProcessCameraControl();
+    }
+
+    bool MouseSelectObject(out GameObject obj, out Vector3 point, int mask)
+    {
+        RaycastHit hit = new RaycastHit();
+        bool hitSuccess = Physics.Raycast(MainCamera.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, mask);
+
+        if (hitSuccess)
+        {
+            obj = hit.transform.gameObject;
+            point = hit.point;
+        }
+        else
+        {
+            obj = null;
+            point = Vector3.zero;
+        }
+
+        return hitSuccess;
     }
 
     void SelectAnObject()
     {
-        RaycastHit hitInfo = new RaycastHit();
-        bool hit = Physics.Raycast(MainCamera.ScreenPointToRay(Input.mousePosition), out hitInfo, Mathf.Infinity, LayerMask.GetMask("VertManip"));
+        GameObject selectedObject;
+        Vector3 hitPoint;
+
+        bool hit = MouseSelectObject(out selectedObject, out hitPoint, LayerMask.GetMask("VertManip"));
         //1 is mask for default layer
 
         if (hit) //hit vertex and axes
         {
             //Select vertex
-            if (hitInfo.transform.gameObject.tag == "Handle")
+            if (selectedObject.tag == "Handle")
             {
-                GameObject newHandle = hitInfo.transform.gameObject;
+                GameObject newHandle = selectedObject;
                 VertexBehavior newVB = newHandle.GetComponent<VertexBehavior>();
 
                 if (newVB.IsSelectable())
@@ -63,7 +86,7 @@ public partial class MasterController : MonoBehaviour {
             }
 
             //Select axes
-            else if(hitInfo.transform.gameObject.tag == "Axes")
+            else if(selectedObject.tag == "Axes")
             {
                 //Deselect any axis currently selected
                 if (axisBehavior != null)
@@ -73,7 +96,7 @@ public partial class MasterController : MonoBehaviour {
                     axis = null;
                 }
 
-                axis = hitInfo.transform.gameObject;
+                axis = selectedObject;
                 axisBehavior = axis.GetComponent<AxisBehavior>();
                 if (axisBehavior != null)
                 {
@@ -123,9 +146,9 @@ public partial class MasterController : MonoBehaviour {
         deltaMouse.y = Input.GetAxis("Mouse Y");
         deltaMouse.z = Input.GetAxis("Mouse ScrollWheel");     //Input.mouseposition only stores in x, y
 
-        deltaMouse.x *= mouseSensitivity.x;
-        deltaMouse.y *= mouseSensitivity.y;
-        deltaMouse.z *= mouseSensitivity.z;
+        deltaMouse.x *= cameraSensitivity.x;
+        deltaMouse.y *= cameraSensitivity.y;
+        deltaMouse.z *= cameraSensitivity.z;
 
         if (vertBehavior == null)
             return;
@@ -133,16 +156,56 @@ public partial class MasterController : MonoBehaviour {
         switch(curManipAxis)
         {
             case manipAxis.xAxis:
-                vertBehavior.MoveX(deltaMouse.x * mouseSensitivity.x);
+                vertBehavior.MoveX(deltaMouse.x * cameraSensitivity.x);
                 break;
             case manipAxis.yAxis:
-                vertBehavior.MoveY(deltaMouse.y * mouseSensitivity.y);
+                vertBehavior.MoveY(deltaMouse.y * cameraSensitivity.y);
                 break;
             case manipAxis.zAxis:
-                vertBehavior.MoveZ(deltaMouse.z * mouseSensitivity.z);
+                vertBehavior.MoveZ(deltaMouse.z * cameraSensitivity.z);
                 break;
             case manipAxis.nullAxis:
                 break;
+        }
+    }
+
+    private void ProcessCameraControl()
+    {
+        //There are three types of camera movement
+        //Tumble - Alt + RMB + mouse X/Y
+        //Track - Alt + LMB + mouse X/Y
+        //Dolly - Alt + Scroll Wheel
+        Vector3 deltaMouse;// = Input.mousePosition - oldMousePosition;
+        deltaMouse.x = Input.GetAxis("Mouse X");
+        deltaMouse.y = Input.GetAxis("Mouse Y");
+        deltaMouse.z = Input.GetAxis("Mouse ScrollWheel");     //Input.mouseposition only stores in x, y
+
+        deltaMouse.x *= mouseSensitivity.x;
+        deltaMouse.y *= mouseSensitivity.y;
+        deltaMouse.z *= mouseSensitivity.z;
+
+        if (Input.GetKey(KeyCode.LeftAlt)) //enable camera manipulation
+        {
+            if (Input.GetMouseButton(0))         //Track
+            {
+                CamControl.MoveCamera(CamMode.Track, deltaMouse);
+                //modeIndicator.SetMode(CamMode.Track);
+            }
+            else if (Input.GetMouseButton(1))    //Tumble
+            {
+                deltaMouse.y *= -1.0f;
+                CamControl.MoveCamera(CamMode.Tumble, deltaMouse);
+                //modeIndicator.SetMode(CamMode.Tumble);
+            }
+            else                                    //Dolly
+            {
+                CamControl.MoveCamera(CamMode.Dolly, deltaMouse);
+                //modeIndicator.SetMode(CamMode.Dolly);
+            }
+        }
+        else
+        {
+            //modeIndicator.SetMode(CamMode.None);
         }
     }
 }
