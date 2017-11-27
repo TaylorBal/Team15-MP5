@@ -64,7 +64,7 @@ public partial class MasterController : MonoBehaviour {
         }
         else if(Input.GetKeyUp(KeyCode.LeftControl))
         {
-            if (axis == null)
+            if (vertBehavior == null)       //only hide the handles if we don't have any selected
             {
                 handleManip = false;
                 if (curMesh == MeshType.Plane)
@@ -154,6 +154,20 @@ public partial class MasterController : MonoBehaviour {
         }
         else //did not hit anything
         {
+            //reset all of the handles if we're not holding LCtrl
+            if(!Input.GetKey(KeyCode.LeftControl)) 
+            {
+                handleManip = false;
+                if (curMesh == MeshType.Plane)
+                {
+                    planeMesh.HideVertexHandles();
+                }
+                else if (curMesh == MeshType.Cylinder)
+                {
+                    cylMesh.HideVertexHandles();
+                }
+            }
+
             //Deselect any previous selection
             if (vertBehavior != null)
             {
