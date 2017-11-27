@@ -121,7 +121,7 @@ public class PlaneMesh : MyMesh {
         {
             vertexHandles[i] = Instantiate(vertexHandleType, LtW * vertices[i], Quaternion.identity);
             VertexBehavior vb = vertexHandles[i].GetComponent<VertexBehavior>();
-            vb.Init(this, i, true);
+            vb.Init(this, i, true, handlesVisible);
         }
     }
 

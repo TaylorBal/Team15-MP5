@@ -131,7 +131,7 @@ public class CylMesh : MyMesh
 
             //you can only select the first of each row
             bool selectable = i % circleRes == 0;
-            vb.Init(this, i, selectable);
+            vb.Init(this, i, selectable, handlesVisible);
         }
     }
 
@@ -204,9 +204,7 @@ public class CylMesh : MyMesh
 
             //rotate around at current radius
             Matrix4x4 pivot = Matrix4x4.TRS(vertices[index + i], Quaternion.identity, Vector3.one);
-            Matrix4x4 invPivot = Matrix4x4.Inverse(pivot);
-
-            vertices[index + i] = pivot * rotate * invPivot * vertices[index + i];
+            vertices[index + i] = pivot * rotate * pivot.inverse * vertices[index + i];
 
             vertices[index + i] += transform.up * delta.y;
             if (delta.z > 0 || (delta.z < 0 && xz.magnitude > minRadius))

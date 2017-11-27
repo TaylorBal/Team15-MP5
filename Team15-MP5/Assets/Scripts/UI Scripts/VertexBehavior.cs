@@ -34,7 +34,7 @@ public class VertexBehavior : MonoBehaviour {
 
     //Set the values necessary to manipulate our mesh
     //TODO: set material according to selectable status
-    public void Init(MyMesh mesh, int index, bool selectable = true)
+    public void Init(MyMesh mesh, int index, bool selectable, bool startActive)
     {
         manipMesh = mesh;
         vertIndex = index;
@@ -44,6 +44,8 @@ public class VertexBehavior : MonoBehaviour {
             basicMat = selectableMat;
             GetComponent<MeshRenderer>().material = basicMat;
         }
+
+        gameObject.SetActive(startActive);
     }
 
     public void SetAxesOrientation(Quaternion orientation)

@@ -25,6 +25,7 @@ public partial class MyMesh : MonoBehaviour {
     // 2D array of sphere handle prefabs
     public GameObject vertexHandleType;
     public GameObject[] vertexHandles;
+    public bool handlesVisible = false;
 
     // Kind of a proto-transform for the texture
     public Vector2 textureOffset = new Vector2(0, 0);
@@ -172,6 +173,7 @@ public partial class MyMesh : MonoBehaviour {
         {
             Destroy(allHandles[i]);
         }
+        handlesVisible = false;
     }
     
     public virtual void MakeVertexHandles()
@@ -188,12 +190,14 @@ public partial class MyMesh : MonoBehaviour {
     {
         foreach (GameObject g in vertexHandles)
             g.SetActive(false);
+        handlesVisible = false;
     }
 
     public void ShowVertexHandles()
     {
         foreach (GameObject g in vertexHandles)
             g.SetActive(true);
+        handlesVisible = true;
     }
 
     /*  **********
