@@ -160,7 +160,7 @@ public partial class MyMesh : MonoBehaviour {
         for (int i = 0; i < adjFaces.Length; i++)
         {
             normals[i] = ComputeVertexNormal(i, adjFaces[i], faceNormals);
-        }
+        }        
     }
 
     protected virtual void MakeUV() { }
@@ -178,9 +178,8 @@ public partial class MyMesh : MonoBehaviour {
     {
     }
 
-    public void UpdateVertexHandles()
+    public void RemakeVertexHandles()
     {
-        //we can make this more efficient, but for now...
         ClearVertexHandles();
         MakeVertexHandles();
     }
@@ -226,6 +225,13 @@ public partial class MyMesh : MonoBehaviour {
     {
         vertices[index] += delta;
         vertexHandles[index].transform.localPosition = transform.localToWorldMatrix * vertices[index];
+        //update 
+        for (int i = 0; i < vertexHandles.Length; i++)
+        {
+            Debug.Log(normals[i]);
+            Quaternion q = Quaternion.LookRotation(transform.forward, normals[i]);
+            vertexHandles[i].transform.localRotation = q;
+        }
     }
 
     public bool GetNormal(int index, ref Vector3 normal)

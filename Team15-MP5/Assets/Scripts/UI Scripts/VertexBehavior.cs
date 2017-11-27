@@ -5,6 +5,7 @@ using UnityEngine;
 public class VertexBehavior : MonoBehaviour {
 
     public Material basicMat;
+    public Material selectableMat;
     public Material selectMat;
 
     public GameObject axesType;
@@ -38,6 +39,19 @@ public class VertexBehavior : MonoBehaviour {
         manipMesh = mesh;
         vertIndex = index;
         this.selectable = selectable;
+        if (selectable)
+        {
+            basicMat = selectableMat;
+            GetComponent<MeshRenderer>().material = basicMat;
+        }
+    }
+
+    public void SetAxesOrientation(Quaternion orientation)
+    {
+        if(hasAxes)
+        {
+            axes.transform.localRotation = orientation;
+        }
     }
 
     public void Select()

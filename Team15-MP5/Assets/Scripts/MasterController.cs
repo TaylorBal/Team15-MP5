@@ -72,7 +72,7 @@ public partial class MasterController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        LMBService();
+        InputService();
 	}
 
     /// <summary>
@@ -104,7 +104,7 @@ public partial class MasterController : MonoBehaviour {
         planeMesh.SetN((int)val);
 
         if (curMesh == MeshType.Plane)
-            planeMesh.UpdateVertexHandles();
+            planeMesh.RemakeVertexHandles();
     }
 
     public void ChangeM(float val)
@@ -112,7 +112,7 @@ public partial class MasterController : MonoBehaviour {
         planeMesh.SetM((int)val);
 
         if(curMesh == MeshType.Plane)
-            planeMesh.UpdateVertexHandles();
+            planeMesh.RemakeVertexHandles();
     }
 
     public void ChangeCylRes(float val)
@@ -120,7 +120,7 @@ public partial class MasterController : MonoBehaviour {
         cylMesh.SetCircleRes((int)val);
 
         if (curMesh == MeshType.Cylinder)
-            cylMesh.UpdateVertexHandles();
+            cylMesh.RemakeVertexHandles();
     }
 
     public void ChangeCylRot(float val)
@@ -128,7 +128,7 @@ public partial class MasterController : MonoBehaviour {
         cylMesh.SetRotation(val);
 
         if(curMesh == MeshType.Cylinder)
-            cylMesh.UpdateVertexHandles();
+            cylMesh.RemakeVertexHandles();
     }
 
     public void xChanged(float val)

@@ -5,6 +5,7 @@ using UnityEngine;
 public class CylMesh : MyMesh
 {
     private float radius = 0.5f;
+    public float minRadius = 0.25f;
     private float rotation = 270.0f;
 
     private int circleRes = 8;          //# pixels in circle cross-section
@@ -190,7 +191,45 @@ public class CylMesh : MyMesh
     {
         //this vertex is connected to all the others in its row
         //in this case guaranteed to be the first in the row
-        for(int i = 0; i < circleRes; i++)
-            base.MoveVertex(index + i, delta);
+
+        //The movement is always relative to the normal
+        //y stays the same
+        //all verts connected match the changes relative to their normal
+
+        Matrix4x4 rotate = Matrix4x4.TRS(Vector3.zero, Quaternion.AngleAxis(-delta.x, transform.up), Vector3.one);
+
+        for (int i = 0; i < circleRes; i++)
+        {
+            Vector3 xz = (new Vector3(vertices[index + i].x, 0.0f, vertices[index + i].z));
+
+            //rotate around at current radius
+            Matrix4x4 pivot = Matrix4x4.TRS(vertices[index + i], Quaternion.identity, Vector3.one);
+            Matrix4x4 invPivot = Matrix4x4.Inverse(pivot);
+
+            vertices[index + i] = pivot * rotate * invPivot * vertices[index + i];
+
+            vertices[index + i] += transform.up * delta.y;
+            if (delta.z > 0 || (delta.z < 0 && xz.magnitude > minRadius))
+            {
+                vertices[index + i] += xz.normalized * delta.z;
+            }
+
+            vertexHandles[index + i].transform.localPosition = transform.localToWorldMatrix * vertices[index + i];
+            if(i == 0)
+            {
+                VertexBehavior vb = vertexHandles[index].GetComponent<VertexBehavior>();   
+                Quaternion lr = Quaternion.LookRotation(xz.normalized, transform.up);
+                vb.SetAxesOrientation(lr);
+            }
+        }
+
+
+        //update the orientations of all of the handles
+        for (int j = 0; j < vertexHandles.Length; j++)
+        {
+            Vector3 right = vertices[(j + 1) % vertices.Length] - vertices[j];
+            Quaternion q = Quaternion.LookRotation(Vector3.Cross(normals[j], right), normals[j]);
+            vertexHandles[j].transform.localRotation = q;
+        }
     }
 }

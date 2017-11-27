@@ -4,7 +4,7 @@ using UnityEngine;
 
 public partial class MasterController : MonoBehaviour {
 
-    public Vector3 mouseSensitivity = new Vector3(1.0f, 1.0f, 1.0f);
+    public Vector3 manipSensitivity = new Vector3(1.0f, 1.0f, 1.0f);
     bool handleManip = false;
     //public CamModeIndicator modeIndicator = null;
 
@@ -13,7 +13,7 @@ public partial class MasterController : MonoBehaviour {
     /// </summary>
     int orientation = 0;
 
-    void LMBService()
+    void InputService()
     {
         UpdateHandleInteract();
 
@@ -85,7 +85,6 @@ public partial class MasterController : MonoBehaviour {
         Vector3 hitPoint;
 
         bool hit = MouseSelectObject(out selectedObject, out hitPoint, LayerMask.GetMask("VertManip"));
-        //1 is mask for default layer
 
         if (hit) //hit vertex and axes
         {
@@ -193,9 +192,9 @@ public partial class MasterController : MonoBehaviour {
         deltaMouse.y = Input.GetAxis("Mouse Y");
         deltaMouse.z = Input.GetAxis("Mouse ScrollWheel");     //Input.mouseposition only stores in x, y
 
-        deltaMouse.x *= mouseSensitivity.x;
-        deltaMouse.y *= mouseSensitivity.y;
-        deltaMouse.z *= mouseSensitivity.z;
+        deltaMouse.x *= manipSensitivity.x;
+        deltaMouse.y *= manipSensitivity.y;
+        deltaMouse.z *= manipSensitivity.z;
 
         if (vertBehavior == null)
             return;
@@ -203,13 +202,13 @@ public partial class MasterController : MonoBehaviour {
         switch(curManipAxis)
         {
             case manipAxis.xAxis:
-                vertBehavior.MoveX(deltaMouse.x * mouseSensitivity.x);
+                vertBehavior.MoveX(deltaMouse.x * manipSensitivity.x);
                 break;
             case manipAxis.yAxis:
-                vertBehavior.MoveY(deltaMouse.y * mouseSensitivity.y);
+                vertBehavior.MoveY(deltaMouse.y * manipSensitivity.y);
                 break;
             case manipAxis.zAxis:
-                vertBehavior.MoveZ(deltaMouse.z * mouseSensitivity.z);
+                vertBehavior.MoveZ(deltaMouse.y * manipSensitivity.z);
                 break;
             case manipAxis.nullAxis:
                 break;
@@ -226,10 +225,6 @@ public partial class MasterController : MonoBehaviour {
         deltaMouse.x = Input.GetAxis("Mouse X");
         deltaMouse.y = Input.GetAxis("Mouse Y");
         deltaMouse.z = Input.GetAxis("Mouse ScrollWheel");     //Input.mouseposition only stores in x, y
-
-        deltaMouse.x *= mouseSensitivity.x;
-        deltaMouse.y *= mouseSensitivity.y;
-        deltaMouse.z *= mouseSensitivity.z;
 
         if (Input.GetKey(KeyCode.LeftAlt)) //enable camera manipulation
         {
