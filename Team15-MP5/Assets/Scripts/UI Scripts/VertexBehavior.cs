@@ -14,6 +14,7 @@ public class VertexBehavior : MonoBehaviour {
 
     //necessary variables for manipulation
     private MyMesh manipMesh = null;
+    private Vector3 manipSensitivity = new Vector3(-100.0f, 1.0f, 1.0f);
     public int vertIndex = -1;
     private bool selectable = true;
 
@@ -76,29 +77,37 @@ public class VertexBehavior : MonoBehaviour {
         }
     }
 
-    public void MoveX(float deltaX)
+    public void MoveX(Vector3 inputVec)
     {
-        if (manipMesh != null)
+        Debug.Log("X" + manipSensitivity.x);
+        if (manipMesh != null && hasAxes == true)
         {
-            manipMesh.MoveVertex(vertIndex, deltaX * Vector3.right);
+            //project the input vector along the axis of the 
+            float mag = manipSensitivity.x * Vector3.Dot(inputVec, axes.transform.right);
+            manipMesh.MoveVertex(vertIndex, mag * Vector3.right);// axes.transform.right);
         }
     }
 
-    public void MoveY(float deltaY)
+    public void MoveY(Vector3 inputVec)
     {
-        if (manipMesh != null)
+        Debug.Log("Y" + manipSensitivity.y);
+        if (manipMesh != null && hasAxes == true)
         {
-            manipMesh.MoveVertex(vertIndex, deltaY * Vector3.up);
+            //project the input vector along the axis of the 
+            float mag = manipSensitivity.y * Vector3.Dot(inputVec, axes.transform.up);
+            manipMesh.MoveVertex(vertIndex, mag * Vector3.up);// axes.transform.up);
         }
     }
 
-    public void MoveZ(float deltaZ)
+    public void MoveZ(Vector3 inputVec)
     {
-        if (manipMesh != null)
+        Debug.Log("Z" + manipSensitivity.z);
+        if (manipMesh != null && hasAxes == true)
         {
-            manipMesh.MoveVertex(vertIndex, deltaZ * Vector3.forward);
+            //project the input vector along the axis of the 
+            float mag = manipSensitivity.z *Vector3.Dot(inputVec, axes.transform.forward);
+            manipMesh.MoveVertex(vertIndex, mag * Vector3.forward);// axes.transform.forward);
         }
     }
-
     public bool IsSelectable() { return selectable; }
 }

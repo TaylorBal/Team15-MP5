@@ -4,7 +4,6 @@ using UnityEngine;
 
 public partial class MasterController : MonoBehaviour {
 
-    public Vector3 manipSensitivity = new Vector3(1.0f, 1.0f, 1.0f);
     bool handleManip = false;
     //public CamModeIndicator modeIndicator = null;
 
@@ -192,9 +191,11 @@ public partial class MasterController : MonoBehaviour {
         deltaMouse.y = Input.GetAxis("Mouse Y");
         deltaMouse.z = Input.GetAxis("Mouse ScrollWheel");     //Input.mouseposition only stores in x, y
 
-        deltaMouse.x *= manipSensitivity.x;
-        deltaMouse.y *= manipSensitivity.y;
-        deltaMouse.z *= manipSensitivity.z;
+        Vector3 mousePos = Input.mousePosition;
+        //find a vector in world space corresponding to the deltaMouse
+        Vector3 vEnd = MainCamera.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, MainCamera.nearClipPlane));
+        Vector3 vStart = MainCamera.ScreenToWorldPoint(new Vector3(mousePos.x - 100 * deltaMouse.x,  mousePos.y - 100 * deltaMouse.y, MainCamera.nearClipPlane));
+        Vector3 worldDir = vEnd - vStart;
 
         if (vertBehavior == null)
             return;
@@ -202,13 +203,13 @@ public partial class MasterController : MonoBehaviour {
         switch(curManipAxis)
         {
             case manipAxis.xAxis:
-                vertBehavior.MoveX(deltaMouse.x * manipSensitivity.x);
+                vertBehavior.MoveX(worldDir);
                 break;
             case manipAxis.yAxis:
-                vertBehavior.MoveY(deltaMouse.y * manipSensitivity.y);
+                vertBehavior.MoveY(worldDir);
                 break;
             case manipAxis.zAxis:
-                vertBehavior.MoveZ(deltaMouse.y * manipSensitivity.z);
+                vertBehavior.MoveZ(worldDir);
                 break;
             case manipAxis.nullAxis:
                 break;

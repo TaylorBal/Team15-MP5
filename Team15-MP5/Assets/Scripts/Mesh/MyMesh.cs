@@ -232,7 +232,6 @@ public partial class MyMesh : MonoBehaviour {
         //update 
         for (int i = 0; i < vertexHandles.Length; i++)
         {
-            Debug.Log(normals[i]);
             Quaternion q = Quaternion.LookRotation(transform.forward, normals[i]);
             vertexHandles[i].transform.localRotation = q;
         }
