@@ -67,7 +67,7 @@ public class MainCameraController : MonoBehaviour {
     void Tumble(Vector3 delta)
     {
         //Orbiting around Y axis presents no problems
-        OrbitOnAxis(delta.x, transform.up);
+        OrbitOnAxis(delta.x * sensitivity.x, transform.up);
 
         //Only orbit around horiz axis if within range
 
@@ -75,7 +75,7 @@ public class MainCameraController : MonoBehaviour {
         float tmpAngle = transform.localEulerAngles.x + delta.y;
         if (tmpAngle > 360.0f + tiltMin || tmpAngle < tiltMax)
         {
-            OrbitOnAxis(delta.y, transform.right);
+            OrbitOnAxis(delta.y * sensitivity.x, transform.right);
         }
     }
 
@@ -88,8 +88,8 @@ public class MainCameraController : MonoBehaviour {
         Vector3 transVec = up + right;
 
         
-        LookAtPosition.localPosition += transVec;
-        transform.localPosition += transVec;
+        LookAtPosition.localPosition += transVec * sensitivity.y;
+        transform.localPosition += transVec * sensitivity.y;
     }
 
     //Scroll wheel moves towards/away from lookAtPosition

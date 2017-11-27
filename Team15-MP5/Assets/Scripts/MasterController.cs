@@ -85,12 +85,16 @@ public partial class MasterController : MonoBehaviour {
         {
             cylMesh.Disable();
             planeMesh.Enable();
+            if (!handleManip)
+                planeMesh.HideVertexHandles();
             curMesh = MeshType.Plane;
         }
         else if (mode == 1)
         {
             planeMesh.Disable();
             cylMesh.Enable();
+            if (!handleManip)
+                cylMesh.HideVertexHandles();
             curMesh = MeshType.Cylinder;
         }
     }

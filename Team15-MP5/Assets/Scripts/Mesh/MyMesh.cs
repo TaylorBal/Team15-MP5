@@ -42,8 +42,6 @@ public partial class MyMesh : MonoBehaviour {
     // Update is called once per frame
     public virtual void Update()
     {
-        //update the normals and textures to correspond
-        //with the new vertex positions2
         UpdateMesh();
     }
 
@@ -187,13 +185,13 @@ public partial class MyMesh : MonoBehaviour {
         MakeVertexHandles();
     }
 
-    private void HideVertexHandles()
+    public void HideVertexHandles()
     {
         foreach (GameObject g in vertexHandles)
             g.SetActive(false);
     }
 
-    private void ShowVertexHandles()
+    public void ShowVertexHandles()
     {
         foreach (GameObject g in vertexHandles)
             g.SetActive(true);
@@ -227,7 +225,6 @@ public partial class MyMesh : MonoBehaviour {
     public virtual void MoveVertex(int index, Vector3 delta)
     {
         vertices[index] += delta;
-        //UpdateMesh();
         vertexHandles[index].transform.localPosition = transform.localToWorldMatrix * vertices[index];
     }
 

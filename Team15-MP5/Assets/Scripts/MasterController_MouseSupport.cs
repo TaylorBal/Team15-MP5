@@ -5,7 +5,7 @@ using UnityEngine;
 public partial class MasterController : MonoBehaviour {
 
     public Vector3 mouseSensitivity = new Vector3(1.0f, 1.0f, 1.0f);
-    public Vector3 cameraSensitivity = new Vector3(1.0f, 1.0f, 1.0f);
+    bool handleManip = false;
     //public CamModeIndicator modeIndicator = null;
 
     /// <summary>
@@ -15,6 +15,8 @@ public partial class MasterController : MonoBehaviour {
 
     void LMBService()
     {
+        UpdateHandleInteract();
+
         if(Input.GetMouseButtonDown(0))
         {
             SelectAnObject();
@@ -44,6 +46,37 @@ public partial class MasterController : MonoBehaviour {
         }
 
         return hitSuccess;
+    }
+
+    void UpdateHandleInteract()
+    {
+        if(Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            handleManip = true;
+           if(curMesh == MeshType.Plane)
+            {
+                planeMesh.ShowVertexHandles();
+            }
+            else if(curMesh == MeshType.Cylinder)
+            {
+                cylMesh.ShowVertexHandles();
+            }
+        }
+        else if(Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            if (axis == null)
+            {
+                handleManip = false;
+                if (curMesh == MeshType.Plane)
+                {
+                    planeMesh.HideVertexHandles();
+                }
+                else if (curMesh == MeshType.Cylinder)
+                {
+                    cylMesh.HideVertexHandles();
+                }
+            }
+        }
     }
 
     void SelectAnObject()
@@ -115,7 +148,7 @@ public partial class MasterController : MonoBehaviour {
                         default:
                             curManipAxis = manipAxis.nullAxis;
                             break;
-                    };
+                    }
                 }
             }
         }
@@ -146,9 +179,9 @@ public partial class MasterController : MonoBehaviour {
         deltaMouse.y = Input.GetAxis("Mouse Y");
         deltaMouse.z = Input.GetAxis("Mouse ScrollWheel");     //Input.mouseposition only stores in x, y
 
-        deltaMouse.x *= cameraSensitivity.x;
-        deltaMouse.y *= cameraSensitivity.y;
-        deltaMouse.z *= cameraSensitivity.z;
+        deltaMouse.x *= mouseSensitivity.x;
+        deltaMouse.y *= mouseSensitivity.y;
+        deltaMouse.z *= mouseSensitivity.z;
 
         if (vertBehavior == null)
             return;
@@ -156,13 +189,13 @@ public partial class MasterController : MonoBehaviour {
         switch(curManipAxis)
         {
             case manipAxis.xAxis:
-                vertBehavior.MoveX(deltaMouse.x * cameraSensitivity.x);
+                vertBehavior.MoveX(deltaMouse.x * mouseSensitivity.x);
                 break;
             case manipAxis.yAxis:
-                vertBehavior.MoveY(deltaMouse.y * cameraSensitivity.y);
+                vertBehavior.MoveY(deltaMouse.y * mouseSensitivity.y);
                 break;
             case manipAxis.zAxis:
-                vertBehavior.MoveZ(deltaMouse.z * cameraSensitivity.z);
+                vertBehavior.MoveZ(deltaMouse.z * mouseSensitivity.z);
                 break;
             case manipAxis.nullAxis:
                 break;
