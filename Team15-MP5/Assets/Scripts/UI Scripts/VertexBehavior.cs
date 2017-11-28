@@ -14,7 +14,7 @@ public class VertexBehavior : MonoBehaviour {
 
     //necessary variables for manipulation
     private MyMesh manipMesh = null;
-    private Vector3 manipSensitivity = new Vector3(-100.0f, 1.0f, 1.0f);
+    private Vector3 manipSensitivity = new Vector3(1.0f, 1.0f, 1.0f);
     public int vertIndex = -1;
     private bool selectable = true;
 
@@ -103,7 +103,7 @@ public class VertexBehavior : MonoBehaviour {
         if (manipMesh != null && hasAxes == true)
         {
             //project the input vector along the axis of the 
-            float mag = manipSensitivity.z *Vector3.Dot(inputVec, axes.transform.forward);
+            float mag = manipSensitivity.z * Vector3.Dot(inputVec, axes.transform.forward);
             manipMesh.MoveVertex(vertIndex, mag * Vector3.forward);// axes.transform.forward);
         }
     }

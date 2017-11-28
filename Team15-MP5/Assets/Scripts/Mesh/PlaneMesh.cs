@@ -156,7 +156,6 @@ public class PlaneMesh : MyMesh {
 
     public override void MoveVertex(int index, Vector3 delta)
     {
-        //in this case we only care about the vertical direction
-        base.MoveVertex(index, new Vector3(0.0f, delta.y, 0.0f));
+        base.MoveVertex(index, new Vector3(delta.x, delta.y, delta.z));
     }
 }

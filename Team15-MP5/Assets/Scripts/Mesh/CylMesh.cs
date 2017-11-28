@@ -186,7 +186,7 @@ public class CylMesh : MyMesh
         //y stays the same
         //all verts connected match the changes relative to their normal
 
-        Matrix4x4 rotate = Matrix4x4.TRS(Vector3.zero, Quaternion.AngleAxis(-delta.x, transform.up), Vector3.one);
+        Matrix4x4 rotate = Matrix4x4.TRS(Vector3.zero, Quaternion.AngleAxis(50 * delta.x, transform.up), Vector3.one);
 
         for (int i = 0; i < circleRes; i++)
         {
@@ -224,7 +224,6 @@ public class CylMesh : MyMesh
     public override Quaternion GetVBOrientation(int index)
     {
         Vector3 xz = (new Vector3(vertices[index].x, 0.0f, vertices[index].z));
-        VertexBehavior vb = vertexHandles[index].GetComponent<VertexBehavior>();
         Quaternion lr = Quaternion.LookRotation(xz.normalized, transform.up);
         return lr;
     }

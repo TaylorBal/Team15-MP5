@@ -148,6 +148,8 @@ public partial class MasterController : MonoBehaviour {
 
             if (curManipMode != ManipMode.VertexManip)
                 SetVertexHandles(false);
+
+            ResetVertexBehavior();
         }
         else if (mode == 1)
         {
@@ -158,6 +160,8 @@ public partial class MasterController : MonoBehaviour {
 
             if (curManipMode != ManipMode.VertexManip)
                 SetVertexHandles(false);
+
+            ResetVertexBehavior();
         }
     }
 
