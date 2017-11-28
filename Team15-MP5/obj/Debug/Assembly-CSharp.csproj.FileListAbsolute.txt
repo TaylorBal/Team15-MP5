@@ -27,3 +27,4 @@ C:\Users\xiome\Desktop\MP5\Team15-MP5\Temp\bin\Debug\UnityEngine.VR.xml
 C:\Users\xiome\Desktop\MP5\Team15-MP5\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
 C:\Users\xiome\Desktop\MP5\Team15-MP5\obj\Debug\Assembly-CSharp.dll
 C:\Users\xiome\Desktop\MP5\Team15-MP5\obj\Debug\Assembly-CSharp.pdb
+C:\Users\xiome\Desktop\MP5\Team15-MP5\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache

@@ -79,7 +79,6 @@ public class VertexBehavior : MonoBehaviour {
 
     public void MoveX(Vector3 inputVec)
     {
-        Debug.Log("X" + manipSensitivity.x);
         if (manipMesh != null && hasAxes == true)
         {
             //project the input vector along the axis of the 
@@ -90,7 +89,6 @@ public class VertexBehavior : MonoBehaviour {
 
     public void MoveY(Vector3 inputVec)
     {
-        Debug.Log("Y" + manipSensitivity.y);
         if (manipMesh != null && hasAxes == true)
         {
             //project the input vector along the axis of the 
@@ -101,7 +99,6 @@ public class VertexBehavior : MonoBehaviour {
 
     public void MoveZ(Vector3 inputVec)
     {
-        Debug.Log("Z" + manipSensitivity.z);
         if (manipMesh != null && hasAxes == true)
         {
             //project the input vector along the axis of the 

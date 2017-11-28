@@ -49,15 +49,17 @@
      <Compile Include="Assets\Scripts\CameraBehavior.cs" />
      <Compile Include="Assets\Scripts\Library\Matrix3x3.cs" />
      <Compile Include="Assets\Scripts\Library\Matrix3x3Helpers.cs" />
+     <Compile Include="Assets\Scripts\MainCameraController.cs" />
+     <Compile Include="Assets\Scripts\MasterController.cs" />
+     <Compile Include="Assets\Scripts\MasterController_MouseSupport.cs" />
      <Compile Include="Assets\Scripts\Mesh\CylMesh.cs" />
      <Compile Include="Assets\Scripts\Mesh\MyMesh.cs" />
+     <Compile Include="Assets\Scripts\Mesh\MyMesh_NormalSupport.cs" />
      <Compile Include="Assets\Scripts\Mesh\PlaneMesh.cs" />
      <Compile Include="Assets\Scripts\UI Scripts\AxisBehavior.cs" />
-     <Compile Include="Assets\Scripts\UI Scripts\MasterController.cs" />
-     <Compile Include="Assets\Scripts\UI Scripts\MasterController_MouseSupport.cs" />
      <Compile Include="Assets\Scripts\UI Scripts\SliderWithEcho.cs" />
      <Compile Include="Assets\Scripts\UI Scripts\VertexBehavior.cs" />
-     <Compile Include="Assets\Scripts\UI Scripts\XfromControl.cs" />
+     <Compile Include="Assets\Scripts\UI Scripts\XformControl.cs" />
      <None Include="Assets\Shaders\ShaderWithoutCull.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

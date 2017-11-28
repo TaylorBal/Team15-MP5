@@ -48,7 +48,7 @@ public class CylMesh : MyMesh
             for (int j = 0; j < circleRes; j++)
             {
                 float xVal = radius * Mathf.Sin(theta);
-                float zVal = radius * Mathf.Cos(theta);
+                float zVal = radius * -Mathf.Cos(theta);
 
                 int index = i * circleRes + j;
                 vertices[index] = new Vector3(xVal, yVal, zVal);
@@ -70,8 +70,9 @@ public class CylMesh : MyMesh
             for(int j = 0; j < circleRes - 1; j++)
             {
                 v1 = i * circleRes + j;
-                v2 = v1 + circleRes;
-                v3 = v1 + circleRes + 1;
+                v2 = v1 + circleRes + 1;
+                v3 = v1 + circleRes;
+                
                 triangles[idx++] = v1;
                 triangles[idx++] = v2;
                 triangles[idx++] = v3;
@@ -84,8 +85,9 @@ public class CylMesh : MyMesh
             for (int j = 0; j < circleRes - 1; j++)
             {
                 v1 = i * circleRes + j;
-                v2 = v1 + circleRes + 1;
-                v3 = v1 + 1;
+                v2 = v1 + 1;
+                v3 = v1 + circleRes + 1;
+
                 triangles[idx++] = v1;
                 triangles[idx++] = v2;
                 triangles[idx++] = v3;

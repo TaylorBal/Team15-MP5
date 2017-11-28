@@ -75,6 +75,39 @@ public partial class MasterController : MonoBehaviour {
         InputService();
 	}
 
+    private void SetVertexHandles(bool active)
+    {
+        if (active)
+        {
+            if (curMesh == MeshType.Plane)
+            {
+                planeMesh.ShowVertexHandles();
+            }
+            else if (curMesh == MeshType.Cylinder)
+            {
+                cylMesh.ShowVertexHandles();
+            }
+        }
+        else
+        {
+            if (curMesh == MeshType.Plane)
+            {
+                planeMesh.HideVertexHandles();
+            }
+            else if (curMesh == MeshType.Cylinder)
+            {
+                cylMesh.HideVertexHandles();
+            }
+        }
+    }
+
+
+    /*
+     * 
+     *      UI Handling Functions
+     * 
+     */
+
     /// <summary>
     /// Change modes. 0 = "Plane", 1 = "Cylinder".
     /// </summary>
@@ -85,17 +118,23 @@ public partial class MasterController : MonoBehaviour {
         {
             cylMesh.Disable();
             planeMesh.Enable();
-            if (!handleManip)
-                planeMesh.HideVertexHandles();
+            //if (!handleManip)
+              //  planeMesh.HideVertexHandles();
+
             curMesh = MeshType.Plane;
+            if (curManipMode != ManipMode.VertexManip)
+                SetVertexHandles(false);
         }
         else if (mode == 1)
         {
             planeMesh.Disable();
             cylMesh.Enable();
-            if (!handleManip)
-                cylMesh.HideVertexHandles();
+            //if (!handleManip)
+              //  cylMesh.HideVertexHandles();
+
             curMesh = MeshType.Cylinder;
+            if (curManipMode != ManipMode.VertexManip)
+                SetVertexHandles(false);
         }
     }
 

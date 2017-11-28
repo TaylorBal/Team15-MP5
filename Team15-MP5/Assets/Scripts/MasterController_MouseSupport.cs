@@ -4,7 +4,16 @@ using UnityEngine;
 
 public partial class MasterController : MonoBehaviour {
 
-    bool handleManip = false;
+    public enum ManipMode
+    {
+        None,
+        CamManip,
+        VertexManip
+    }
+    ManipMode curManipMode = ManipMode.None;
+
+    public KeyCode CameraKey = KeyCode.LeftAlt;
+    public KeyCode VertexKey = KeyCode.LeftControl;
     //public CamModeIndicator modeIndicator = null;
 
     /// <summary>
@@ -14,18 +23,30 @@ public partial class MasterController : MonoBehaviour {
 
     void InputService()
     {
-        UpdateHandleInteract();
+        UpdateManipMode();
 
-        if(Input.GetMouseButtonDown(0))
+        switch(curManipMode)
         {
-            SelectAnObject();
+            case ManipMode.CamManip:
+                {
+                    ProcessCameraControl();
+                    break;
+                }
+            case ManipMode.VertexManip:
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        SelectAnObject();
+                    }
+                    else if (Input.GetMouseButton(0))
+                    {
+                        DragVert();
+                    }
+                    break;
+                }
+            case ManipMode.None:
+                break;
         }
-        else if(Input.GetMouseButton(0))
-        {
-            DragVert();
-        }
-
-        ProcessCameraControl();
     }
 
     bool MouseSelectObject(out GameObject obj, out Vector3 point, int mask)
@@ -47,34 +68,75 @@ public partial class MasterController : MonoBehaviour {
         return hitSuccess;
     }
 
-    void UpdateHandleInteract()
+    void UpdateManipMode()
     {
-        if(Input.GetKeyDown(KeyCode.LeftControl))
+        switch(curManipMode)
         {
-            handleManip = true;
-           if(curMesh == MeshType.Plane)
-            {
-                planeMesh.ShowVertexHandles();
-            }
-            else if(curMesh == MeshType.Cylinder)
-            {
-                cylMesh.ShowVertexHandles();
-            }
-        }
-        else if(Input.GetKeyUp(KeyCode.LeftControl))
-        {
-            if (vertBehavior == null)       //only hide the handles if we don't have any selected
-            {
-                handleManip = false;
-                if (curMesh == MeshType.Plane)
+            case ManipMode.CamManip:
                 {
-                    planeMesh.HideVertexHandles();
+                    if(Input.GetKeyUp(CameraKey))
+                    {
+                        if(Input.GetKey(VertexKey))                 //revert to vertex manipulation if user holding key
+                        {
+                            curManipMode = ManipMode.VertexManip;
+                            SetVertexHandles(true);
+                        }
+                        else
+                        {
+                            curManipMode = ManipMode.None;
+                        }
+                    }
+                    break;
                 }
-                else if (curMesh == MeshType.Cylinder)
+            case ManipMode.VertexManip:             
                 {
-                    cylMesh.HideVertexHandles();
+                    if(Input.GetKeyUp(VertexKey) && vertBehavior == null)       //if we release the key leave vertex mode (unless there is a vertex still selected
+                    {
+                        curManipMode = ManipMode.None;
+                        SetVertexHandles(false);
+                    }
+                    else if(!Input.GetKey(VertexKey) && vertBehavior == null)     //if we're currently being held in vertex mode by a selected handle, but just lost it, and we're not holding the vertex key
+                    {
+                        curManipMode = ManipMode.None;
+                        SetVertexHandles(false);
+                    }
+                    else if(Input.GetKeyDown(CameraKey))        //CamManip can override VertexManip
+                    {
+                        curManipMode = ManipMode.CamManip;
+                        SetVertexHandles(false);
+
+                        //make sure we clear out the vetBehavior
+                        if (vertBehavior != null)
+                        {
+                            vertBehavior.Deselect();
+                            vertBehavior = null;
+                            vertHandle = null;
+                        }
+
+                        if (axisBehavior != null)
+                        {
+                            axisBehavior.Deselect();
+                            axisBehavior = null;
+                            axis = null;
+                        }
+                    }
+                    break;
                 }
-            }
+            case ManipMode.None:
+                {
+                    if(Input.GetKeyDown(VertexKey))
+                    {
+                        curManipMode = ManipMode.VertexManip;
+                        SetVertexHandles(true);
+                    }
+                    else if(Input.GetKeyDown(CameraKey))
+                    {
+                        curManipMode = ManipMode.CamManip;
+                    }
+
+                    break;
+                }
+                
         }
     }
 
@@ -152,20 +214,6 @@ public partial class MasterController : MonoBehaviour {
         }
         else //did not hit anything
         {
-            //reset all of the handles if we're not holding LCtrl
-            if(!Input.GetKey(KeyCode.LeftControl)) 
-            {
-                handleManip = false;
-                if (curMesh == MeshType.Plane)
-                {
-                    planeMesh.HideVertexHandles();
-                }
-                else if (curMesh == MeshType.Cylinder)
-                {
-                    cylMesh.HideVertexHandles();
-                }
-            }
-
             //Deselect any previous selection
             if (vertBehavior != null)
             {
@@ -227,8 +275,8 @@ public partial class MasterController : MonoBehaviour {
         deltaMouse.y = Input.GetAxis("Mouse Y");
         deltaMouse.z = Input.GetAxis("Mouse ScrollWheel");     //Input.mouseposition only stores in x, y
 
-        if (Input.GetKey(KeyCode.LeftAlt)) //enable camera manipulation
-        {
+        //if (Input.GetKey(CameraKey)) //enable camera manipulation
+        //{
             if (Input.GetMouseButton(0))         //Track
             {
                 CamControl.MoveCamera(CamMode.Track, deltaMouse);
@@ -245,10 +293,10 @@ public partial class MasterController : MonoBehaviour {
                 CamControl.MoveCamera(CamMode.Dolly, deltaMouse);
                 //modeIndicator.SetMode(CamMode.Dolly);
             }
-        }
-        else
-        {
+        //}
+        //else
+        //{
             //modeIndicator.SetMode(CamMode.None);
-        }
+        //}
     }
 }
