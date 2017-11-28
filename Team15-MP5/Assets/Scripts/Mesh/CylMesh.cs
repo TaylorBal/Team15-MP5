@@ -95,6 +95,42 @@ public class CylMesh : MyMesh
         }
     }
 
+    protected override void MakeNormals()
+    {
+        base.MakeNormals();
+
+        if(rotation >= 360.0f)
+        {
+            LinkNormals();
+        }
+    }
+
+    protected override void UpdateNormals()
+    {
+        base.UpdateNormals();
+
+        if (rotation >= 360.0f)
+        {
+            LinkNormals();
+        }
+    }
+
+    //at 360 degrees, the first and last normals of each row should match
+    private void LinkNormals()
+    {
+        for (int i = 0; i < vertRes; i++)
+        {
+            int normIdx1 = i * circleRes;
+            int normIdx2 = (i + 1) * circleRes - 1;
+
+            Vector3 avgNorm = normals[normIdx1] + normals[normIdx2];
+            avgNorm.Normalize();
+
+            normals[normIdx1] = avgNorm;
+            normals[normIdx2] = avgNorm;
+        }
+    }
+
     protected override void MakeUV()
     {
         //Rotation needs to be about (0.5, 0.5)
@@ -124,6 +160,13 @@ public class CylMesh : MyMesh
         Matrix4x4 LtW = transform.localToWorldMatrix;
         for (int i = 0; i < vertexHandles.Length; i++)
         {
+            //if the rotation is full, don't make the last handle in each row
+            if (rotation >= 360.0f && ((i + 1) % circleRes == 0))
+            {
+                vertexHandles[i] = null;
+                continue;
+            }
+
             vertexHandles[i] = Instantiate(vertexHandleType, LtW * vertices[i], Quaternion.identity);
 
             Quaternion q = Quaternion.LookRotation(-transform.up, normals[i]);
@@ -133,7 +176,10 @@ public class CylMesh : MyMesh
 
             //you can only select the first of each row
             bool selectable = i % circleRes == 0;
-            vb.Init(this, i, selectable, handlesVisible);
+
+
+                vb.Init(this, i, selectable, handlesVisible);
+
         }
     }
 
@@ -202,19 +248,27 @@ public class CylMesh : MyMesh
                 vertices[index + i] += xz.normalized * delta.z;
             }
 
+            //set the vertex handle if there is one
+            if (vertexHandles[index + i] == null)
+                continue;
+
             vertexHandles[index + i].transform.localPosition = transform.localToWorldMatrix * vertices[index + i];
-            if(i == 0)
+            if (i == 0)
             {
-                VertexBehavior vb = vertexHandles[index].GetComponent<VertexBehavior>();   
+                VertexBehavior vb = vertexHandles[index].GetComponent<VertexBehavior>();
                 Quaternion lr = Quaternion.LookRotation(xz.normalized, transform.up);
                 vb.SetAxesOrientation(lr);
             }
-        }
+
+            }
 
 
         //update the orientations of all of the handles
         for (int j = 0; j < vertexHandles.Length; j++)
         {
+            if (vertexHandles[j] == null)
+                continue;
+
             Vector3 right = vertices[(j + 1) % vertices.Length] - vertices[j];
             Quaternion q = Quaternion.LookRotation(Vector3.Cross(normals[j], right), normals[j]);
             vertexHandles[j].transform.localRotation = q;

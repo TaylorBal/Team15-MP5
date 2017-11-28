@@ -67,8 +67,9 @@ public class PlaneMesh : MyMesh {
             for (int j = 0; j < n - 1; j++)
             {
                 v1 = i * n + j;
-                v3 = v1 + n;
                 v2 = v1 + n + 1;
+                v3 = v1 + n;
+
                 triangles[idx++] = v1;
                 triangles[idx++] = v2;
                 triangles[idx++] = v3;
@@ -81,8 +82,9 @@ public class PlaneMesh : MyMesh {
             for (int j = 0; j < n - 1; j++)
             {
                 v1 = i * n + j;
-                v3 = v1 + n + 1;
                 v2 = v1 + 1;
+                v3 = v1 + n + 1;
+
                 triangles[idx++] = v1;
                 triangles[idx++] = v2;
                 triangles[idx++] = v3;

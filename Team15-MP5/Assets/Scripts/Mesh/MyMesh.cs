@@ -118,7 +118,7 @@ public partial class MyMesh : MonoBehaviour {
 
     protected virtual void MakeTriangles() { }
 
-    private void MakeNormals() {
+    protected virtual void MakeNormals() {
 
         faceNormals = new Vector3[triangles.Length / 3];
         adjFaces = new List<int>[vertices.Length];
@@ -147,7 +147,7 @@ public partial class MyMesh : MonoBehaviour {
         }
     }
 
-    private void UpdateNormals()
+    protected virtual void UpdateNormals()
     {
 
         //first calculate face normals
@@ -188,14 +188,21 @@ public partial class MyMesh : MonoBehaviour {
     public void HideVertexHandles()
     {
         foreach (GameObject g in vertexHandles)
-            g.SetActive(false);
+        {
+            if(g != null)
+                g.SetActive(false);
+        }
         handlesVisible = false;
     }
 
     public void ShowVertexHandles()
     {
         foreach (GameObject g in vertexHandles)
-            g.SetActive(true);
+        {
+            if (g != null)
+                g.SetActive(true);
+        }
+
         handlesVisible = true;
     }
 
