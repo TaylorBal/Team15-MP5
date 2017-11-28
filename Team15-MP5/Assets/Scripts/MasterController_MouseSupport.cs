@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public partial class MasterController : MonoBehaviour {
 
     public enum ManipMode
@@ -14,6 +15,7 @@ public partial class MasterController : MonoBehaviour {
 
     public KeyCode CameraKey = KeyCode.LeftAlt;
     public KeyCode VertexKey = KeyCode.LeftControl;
+
     //public CamModeIndicator modeIndicator = null;
 
     /// <summary>
@@ -142,6 +144,9 @@ public partial class MasterController : MonoBehaviour {
 
     void SelectAnObject()
     {
+        if (eventSystem.IsPointerOverGameObject())
+            return;
+
         GameObject selectedObject;
         Vector3 hitPoint;
 
@@ -233,6 +238,9 @@ public partial class MasterController : MonoBehaviour {
 
     private void DragVert()
     {
+        if (eventSystem.IsPointerOverGameObject())
+            return;
+
         //find the delta mouse
         Vector3 deltaMouse;
         deltaMouse.x = Input.GetAxis("Mouse X");
@@ -266,6 +274,8 @@ public partial class MasterController : MonoBehaviour {
 
     private void ProcessCameraControl()
     {
+        if (eventSystem.IsPointerOverGameObject())
+            return;
         //There are three types of camera movement
         //Tumble - Alt + RMB + mouse X/Y
         //Track - Alt + LMB + mouse X/Y

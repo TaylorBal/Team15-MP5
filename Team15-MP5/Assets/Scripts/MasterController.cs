@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public partial class MasterController : MonoBehaviour {
 
     //Camera
     public Camera MainCamera = null;
     private MainCameraController CamControl = null;
+    public EventSystem eventSystem = null;
 
     //Vertex Handle and Axis selection
     GameObject vertHandle = null;
@@ -42,6 +44,8 @@ public partial class MasterController : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+        Debug.Assert(eventSystem != null);
+
         //Camera
         Debug.Assert(MainCamera != null);
         CamControl = MainCamera.GetComponent<MainCameraController>();
