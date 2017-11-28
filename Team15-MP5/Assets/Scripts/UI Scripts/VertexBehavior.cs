@@ -65,6 +65,7 @@ public class VertexBehavior : MonoBehaviour {
             axes = Instantiate(axesType);
             hasAxes = true;
         }
+        SetAxesOrientation(manipMesh.GetVBOrientation(vertIndex));
     }
 
     public void Deselect()

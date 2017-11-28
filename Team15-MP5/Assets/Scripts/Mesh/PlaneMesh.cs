@@ -153,15 +153,6 @@ public class PlaneMesh : MyMesh {
 
     public int GetM() { return m; }
 
-    public int NMtoIdx(int nIndex, int mIndex)
-    {
-        return nIndex * m + mIndex;
-    }
-
-    public bool GetNormal_NM(int nIndex, int mIndex, ref Vector3 normal)
-    {
-        return GetNormal(NMtoIdx(nIndex, mIndex), ref normal);
-    }
 
     public override void MoveVertex(int index, Vector3 delta)
     {

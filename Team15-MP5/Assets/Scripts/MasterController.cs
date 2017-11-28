@@ -12,7 +12,6 @@ public partial class MasterController : MonoBehaviour {
     public EventSystem eventSystem = null;
 
     //Vertex Handle and Axis selection
-    GameObject vertHandle = null;
     VertexBehavior vertBehavior = null;
     GameObject axis = null;
     AxisBehavior axisBehavior = null;
@@ -105,6 +104,28 @@ public partial class MasterController : MonoBehaviour {
         }
     }
 
+    private void ResetAxis()
+    {
+        if (axisBehavior != null)
+        {
+            axisBehavior.Deselect();
+            axisBehavior = null;
+            axis = null;
+        }
+    }
+
+    private void ResetVertexBehavior()
+    {
+        ResetAxis();
+        //make sure we clear out the vertBehavior & Axis
+        if (vertBehavior != null)
+        {
+            vertBehavior.Deselect();
+            vertBehavior = null;
+        }
+    }
+
+
 
     /*
      * 
@@ -120,23 +141,21 @@ public partial class MasterController : MonoBehaviour {
     {
         if (mode == 0)
         {
+            curMesh = MeshType.Plane;
+
             cylMesh.Disable();
             planeMesh.Enable();
-            //if (!handleManip)
-              //  planeMesh.HideVertexHandles();
 
-            curMesh = MeshType.Plane;
             if (curManipMode != ManipMode.VertexManip)
                 SetVertexHandles(false);
         }
         else if (mode == 1)
         {
+            curMesh = MeshType.Cylinder;
+
             planeMesh.Disable();
             cylMesh.Enable();
-            //if (!handleManip)
-              //  cylMesh.HideVertexHandles();
 
-            curMesh = MeshType.Cylinder;
             if (curManipMode != ManipMode.VertexManip)
                 SetVertexHandles(false);
         }
@@ -146,6 +165,9 @@ public partial class MasterController : MonoBehaviour {
     {
         planeMesh.SetN((int)val);
 
+        if(vertBehavior)
+            ResetVertexBehavior();
+
         if (curMesh == MeshType.Plane)
             planeMesh.RemakeVertexHandles();
     }
@@ -154,13 +176,19 @@ public partial class MasterController : MonoBehaviour {
     {
         planeMesh.SetM((int)val);
 
-        if(curMesh == MeshType.Plane)
+        if (vertBehavior)
+            ResetVertexBehavior();
+
+        if (curMesh == MeshType.Plane)
             planeMesh.RemakeVertexHandles();
     }
 
     public void ChangeCylRes(float val)
     {
         cylMesh.SetCircleRes((int)val);
+
+        if (vertBehavior)
+            ResetVertexBehavior();
 
         if (curMesh == MeshType.Cylinder)
             cylMesh.RemakeVertexHandles();
@@ -170,7 +198,10 @@ public partial class MasterController : MonoBehaviour {
     {
         cylMesh.SetRotation(val);
 
-        if(curMesh == MeshType.Cylinder)
+        if (vertBehavior)
+            ResetVertexBehavior();
+
+        if (curMesh == MeshType.Cylinder)
             cylMesh.RemakeVertexHandles();
     }
 

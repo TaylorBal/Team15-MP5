@@ -173,7 +173,6 @@ public partial class MyMesh : MonoBehaviour {
         {
             Destroy(allHandles[i]);
         }
-        handlesVisible = false;
     }
     
     public virtual void MakeVertexHandles()
@@ -247,6 +246,12 @@ public partial class MyMesh : MonoBehaviour {
 
         normal = normals[index];
         return true;
+    }
+
+    public virtual Quaternion GetVBOrientation(int index)
+    {
+        Quaternion lr = Quaternion.LookRotation(transform.forward, transform.up);
+        return lr;
     }
 
 }

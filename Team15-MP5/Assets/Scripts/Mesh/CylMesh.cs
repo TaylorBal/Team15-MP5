@@ -141,18 +141,6 @@ public class CylMesh : MyMesh
     * ACCESSORS
     * ***********/
 
-    public bool SetRadius(float newRadius)
-    {
-        if (newRadius <= 0.0f)
-            return false;
-
-        radius = newRadius;
-        MakeMesh();
-        return true;
-    }
-
-    public float GetRadius() { return radius; }
-
     public bool SetRotation(float newRotation)
     {
         if (newRotation <= 0.0f || newRotation > 360.0f)
@@ -231,5 +219,13 @@ public class CylMesh : MyMesh
             Quaternion q = Quaternion.LookRotation(Vector3.Cross(normals[j], right), normals[j]);
             vertexHandles[j].transform.localRotation = q;
         }
+    }
+
+    public override Quaternion GetVBOrientation(int index)
+    {
+        Vector3 xz = (new Vector3(vertices[index].x, 0.0f, vertices[index].z));
+        VertexBehavior vb = vertexHandles[index].GetComponent<VertexBehavior>();
+        Quaternion lr = Quaternion.LookRotation(xz.normalized, transform.up);
+        return lr;
     }
 }

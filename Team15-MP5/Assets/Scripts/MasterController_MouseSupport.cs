@@ -18,11 +18,6 @@ public partial class MasterController : MonoBehaviour {
 
     //public CamModeIndicator modeIndicator = null;
 
-    /// <summary>
-    ///  0 = null; 1 = x; 2 = y; 3 = z
-    /// </summary>
-    int orientation = 0;
-
     void InputService()
     {
         UpdateManipMode();
@@ -108,19 +103,7 @@ public partial class MasterController : MonoBehaviour {
                         SetVertexHandles(false);
 
                         //make sure we clear out the vetBehavior
-                        if (vertBehavior != null)
-                        {
-                            vertBehavior.Deselect();
-                            vertBehavior = null;
-                            vertHandle = null;
-                        }
-
-                        if (axisBehavior != null)
-                        {
-                            axisBehavior.Deselect();
-                            axisBehavior = null;
-                            axis = null;
-                        }
+                        ResetVertexBehavior();
                     }
                     break;
                 }
@@ -163,20 +146,8 @@ public partial class MasterController : MonoBehaviour {
                 if (newVB.IsSelectable())
                 {
                     //Deselect any object currently selected
-                    if (vertBehavior != null)
-                    {
-                        vertBehavior.Deselect();
-                        vertBehavior = null;
-                        vertHandle = null;
-                    }
-                    if (axisBehavior != null)
-                    {
-                        axisBehavior.Deselect();
-                        axisBehavior = null;
-                        axis = null;
-                    }
+                    ResetVertexBehavior();
 
-                    vertHandle = newHandle;
                     vertBehavior = newVB;
                     if (vertBehavior != null)
                         vertBehavior.Select();
@@ -187,12 +158,7 @@ public partial class MasterController : MonoBehaviour {
             else if(selectedObject.tag == "Axes")
             {
                 //Deselect any axis currently selected
-                if (axisBehavior != null)
-                {
-                    axisBehavior.Deselect();
-                    axisBehavior = null;
-                    axis = null;
-                }
+                ResetAxis();
 
                 axis = selectedObject;
                 axisBehavior = axis.GetComponent<AxisBehavior>();
@@ -220,19 +186,7 @@ public partial class MasterController : MonoBehaviour {
         else //did not hit anything
         {
             //Deselect any previous selection
-            if (vertBehavior != null)
-            {
-                vertBehavior.Deselect();
-                vertBehavior = null;
-                vertHandle = null;
-            }
-
-            if(axisBehavior != null)
-            {
-                axisBehavior.Deselect();
-                axisBehavior = null;
-                axis = null;
-            }
+            ResetVertexBehavior();
         }
     }
 
