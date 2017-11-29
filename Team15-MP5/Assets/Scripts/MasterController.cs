@@ -33,7 +33,8 @@ public partial class MasterController : MonoBehaviour {
     public Slider sliderM;
 
     //Cylinder Sliders
-    public Slider sliderCylinderRes;
+    public Slider sliderCylHorizRes;
+    public Slider sliderCylVertRes;
     public Slider sliderCylinderRot;
 
     //UI: XformControl
@@ -59,9 +60,10 @@ public partial class MasterController : MonoBehaviour {
         sliderM.value = planeMesh.GetM();
 
         //Cylinder Sliders
-        sliderCylinderRes.onValueChanged.AddListener(ChangeCylRes);
+        sliderCylHorizRes.onValueChanged.AddListener(ChangeCylHorizRes);
+        sliderCylVertRes.onValueChanged.AddListener(ChangeCylVertRes);
         sliderCylinderRot.onValueChanged.AddListener(ChangeCylRot);
-        sliderCylinderRes.value = cylMesh.GetCircleRes();
+        sliderCylHorizRes.value = cylMesh.GetCircleRes();
         sliderCylinderRot.value = cylMesh.GetRotation();
 
         //XformControl
@@ -187,9 +189,20 @@ public partial class MasterController : MonoBehaviour {
             planeMesh.RemakeVertexHandles();
     }
 
-    public void ChangeCylRes(float val)
+    public void ChangeCylHorizRes(float val)
     {
         cylMesh.SetCircleRes((int)val);
+
+        if (vertBehavior)
+            ResetVertexBehavior();
+
+        if (curMesh == MeshType.Cylinder)
+            cylMesh.RemakeVertexHandles();
+    }
+
+    public void ChangeCylVertRes(float val)
+    {
+        cylMesh.SetVertRes((int)val);
 
         if (vertBehavior)
             ResetVertexBehavior();
@@ -245,6 +258,14 @@ public partial class MasterController : MonoBehaviour {
             else if (curMesh == MeshType.Cylinder)
                 cylMesh.textureScale.y = val;
         }
+
+        /*if (xFormControl.curMode == XformControl.mode.rotate)
+        {
+            if (curMesh == MeshType.Plane)
+                planeMesh.textureRotation = val;
+            if (curMesh == MeshType.Cylinder)
+                cylMesh.textureRotation = val;
+        }*/
     }
 
     public void zChanged(float val)
