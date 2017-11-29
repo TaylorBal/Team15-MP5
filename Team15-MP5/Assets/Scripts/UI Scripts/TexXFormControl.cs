@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class XFormControl : MonoBehaviour
+public class TexXFormControl : MonoBehaviour
 {
 
-    private Transform mSelected = null;
+    private MyMesh mSelected = null;
 
     public Text title = null;
     public SlidersController sliders = null;
-    public Vector3 previousSliderVals = Vector3.zero;
+    public Vector2 previousSliderVals = Vector2.zero;
     public ModeSelector modes = null;
 
     private MMode currentMode;
@@ -32,15 +32,15 @@ public class XFormControl : MonoBehaviour
     }
 
 
-    public void SetSelected(Transform selected)
+    public void SetSelected(MyMesh selected)
     {
         mSelected = selected;
-        previousSliderVals = Vector3.zero;
+        previousSliderVals = Vector2.zero;
         SetText();
         SetSliders();
     }
 
-    public Transform GetSelected()
+    public MyMesh GetSelected()
     {
         return mSelected;
     }
@@ -109,7 +109,6 @@ public class XFormControl : MonoBehaviour
         // if not in rotation, next two lines of work would be wasted
         float dx = v - previousSliderVals.x;
         previousSliderVals.x = v;
-        Quaternion q = Quaternion.AngleAxis(dx, Vector3.right);
         p.x = v;
         SetSelectedXform(ref p, ref q);
     }
@@ -141,7 +140,7 @@ public class XFormControl : MonoBehaviour
         if (mSelected == null)
             return;
 
-        switch(currentMode)
+        switch (currentMode)
         {
             case MMode.translate:
                 mSelected.localPosition = p;
@@ -159,7 +158,7 @@ public class XFormControl : MonoBehaviour
     {
         Vector3 p = Vector3.zero;
 
-        switch(currentMode)
+        switch (currentMode)
         {
             case MMode.translate:
                 if (mSelected != null)

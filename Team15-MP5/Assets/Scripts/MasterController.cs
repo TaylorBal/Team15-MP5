@@ -38,7 +38,7 @@ public partial class MasterController : MonoBehaviour {
     public Slider sliderCylinderRot;
 
     //UI: XformControl
-    public XformControl xFormControl;
+    public XformControl_Tex xFormControl;
 
 
 	// Use this for initialization
@@ -69,7 +69,7 @@ public partial class MasterController : MonoBehaviour {
         //XformControl
         xFormControl.X.TheSlider.onValueChanged.AddListener(xChanged);
         xFormControl.Y.TheSlider.onValueChanged.AddListener(yChanged);
-        xFormControl.Z.TheSlider.onValueChanged.AddListener(zChanged);
+        //xFormControl.Z.TheSlider.onValueChanged.AddListener(zChanged);
 
         ChangeMode(dropMode.value);
 	}
@@ -224,7 +224,7 @@ public partial class MasterController : MonoBehaviour {
 
     public void xChanged(float val)
     {
-        if(xFormControl.curMode == XformControl.mode.translate)
+        if(xFormControl.curMode == XformControl_Tex.mode.translate)
         {
             if (curMesh == MeshType.Plane)
                 planeMesh.textureOffset.x = val;
@@ -232,18 +232,19 @@ public partial class MasterController : MonoBehaviour {
                 cylMesh.textureOffset.x = val;
         }
 
-        if (xFormControl.curMode == XformControl.mode.scale)
+        else if (xFormControl.curMode == XformControl_Tex.mode.scale)
         {
             if (curMesh == MeshType.Plane)
                 planeMesh.textureScale.x = val;
             else if (curMesh == MeshType.Cylinder)
                 cylMesh.textureScale.x = val;
         }
+
     }
 
     public void yChanged(float val)
     {
-        if (xFormControl.curMode == XformControl.mode.translate)
+        if (xFormControl.curMode == XformControl_Tex.mode.translate)
         {
             if (curMesh == MeshType.Plane)
                 planeMesh.textureOffset.y = val;
@@ -251,12 +252,19 @@ public partial class MasterController : MonoBehaviour {
                 cylMesh.textureOffset.y = val;
         }
 
-        if (xFormControl.curMode == XformControl.mode.scale)
+        else if (xFormControl.curMode == XformControl_Tex.mode.scale)
         {
             if (curMesh == MeshType.Plane)
                 planeMesh.textureScale.y = val;
             else if (curMesh == MeshType.Cylinder)
                 cylMesh.textureScale.y = val;
+        }
+        else
+        {
+            if (curMesh == MeshType.Plane)
+                planeMesh.textureRotation = val;
+            else if (curMesh == MeshType.Cylinder)
+                cylMesh.textureRotation = val;
         }
 
         /*if (xFormControl.curMode == XformControl.mode.rotate)
@@ -268,7 +276,7 @@ public partial class MasterController : MonoBehaviour {
         }*/
     }
 
-    public void zChanged(float val)
+    /*public void zChanged(float val)
     {
         if (xFormControl.curMode == XformControl.mode.rotate)
         {
@@ -277,5 +285,5 @@ public partial class MasterController : MonoBehaviour {
             if (curMesh == MeshType.Cylinder)
                 cylMesh.textureRotation = val;
         }
-    }
+    }*/
 }
